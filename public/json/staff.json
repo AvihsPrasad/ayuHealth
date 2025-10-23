@@ -1,0 +1,219 @@
+[
+  {
+    "id": "1",
+    "name": "Arya Sharma",
+    "department": "Pediatrics",
+    "position": "Doctor",
+    "docId": "12345"
+  },
+  {
+    "id": "2",
+    "name": "Priya Menon",
+    "department": "Cardiology",
+    "position": "Doctor",
+    "docId": "23456"
+  },
+  {
+    "id": "3",
+    "name": "Rohan Gupta",
+    "department": "Orthopedics",
+    "position": "Doctor",
+    "docId": "34567"
+  },
+  {
+    "id": "4",
+    "name": "Sneha Patil",
+    "department": "Dermatology",
+    "position": "Doctor",
+    "docId": "45678"
+  },
+  {
+    "id": "5",
+    "name": "Vikram Singh",
+    "department": "Neurology",
+    "position": "Doctor",
+    "docId": "56789"
+  },
+  {
+    "id": "6",
+    "name": "Meera Joshi",
+    "department": "Family Medicine",
+    "position": "Doctor",
+    "docId": "67890"
+  },
+  {
+    "id": "7",
+    "name": "Staff 7",
+    "department": "Pediatrics",
+    "position": "reception",
+    "docId": "12345"
+  },
+  {
+    "id": "8",
+    "name": "Staff 8",
+    "department": "Cardiology",
+    "position": "Jr doctor",
+    "docId": "12345"
+  },
+  {
+    "id": "9",
+    "name": "Staff 9",
+    "department": "Orthopedics",
+    "position": "assistance",
+    "docId": "12345"
+  },
+  {
+    "id": "10",
+    "name": "Staff 10",
+    "department": "Dermatology",
+    "position": "reception",
+    "docId": ""
+  },
+  {
+    "id": "11",
+    "name": "Staff 11",
+    "department": "Neurology",
+    "position": "Jr doctor",
+    "docId": ""
+  },
+  {
+    "id": "12",
+    "name": "Staff 12",
+    "department": "Family Medicine",
+    "position": "assistance",
+    "docId": ""
+  },
+  {
+    "id": "13",
+    "name": "Staff 13",
+    "department": "Pediatrics",
+    "position": "reception",
+    "docId": ""
+  },
+  {
+    "id": "14",
+    "name": "Staff 14",
+    "department": "Cardiology",
+    "position": "Jr doctor",
+    "docId": ""
+  },
+  {
+    "id": "15",
+    "name": "Staff 15",
+    "department": "Orthopedics",
+    "position": "assistance",
+    "docId": ""
+  },
+  {
+    "id": "16",
+    "name": "Staff 16",
+    "department": "Dermatology",
+    "position": "reception",
+    "docId": ""
+  },
+  {
+    "id": "17",
+    "name": "Staff 17",
+    "department": "Neurology",
+    "position": "Jr doctor",
+    "docId": ""
+  },
+  {
+    "id": "18",
+    "name": "Staff 18",
+    "department": "Family Medicine",
+    "position": "assistance",
+    "docId": ""
+  },
+  {
+    "id": "19",
+    "name": "Staff 19",
+    "department": "Pediatrics",
+    "position": "reception",
+    "docId": ""
+  },
+  {
+    "id": "20",
+    "name": "Staff 20",
+    "department": "Cardiology",
+    "position": "Jr doctor",
+    "docId": ""
+  },
+  {
+    "id": "21",
+    "name": "Staff 21",
+    "department": "Orthopedics",
+    "position": "assistance",
+    "docId": ""
+  },
+  {
+    "id": "22",
+    "name": "Staff 22",
+    "department": "Dermatology",
+    "position": "reception",
+    "docId": ""
+  },
+  {
+    "id": "23",
+    "name": "Staff 23",
+    "department": "Neurology",
+    "position": "Jr doctor",
+    "docId": ""
+  },
+  {
+    "id": "24",
+    "name": "Staff 24",
+    "department": "Family Medicine",
+    "position": "assistance",
+    "docId": ""
+  },
+  {
+    "id": "25",
+    "name": "Staff 25",
+    "department": "Pediatrics",
+    "position": "reception",
+    "docId": ""
+  },
+  {
+    "id": "26",
+    "name": "Staff 26",
+    "department": "Cardiology",
+    "position": "Jr doctor",
+    "docId": ""
+  },
+  {
+    "id": "27",
+    "name": "Staff 27",
+    "department": "Orthopedics",
+    "position": "assistance",
+    "docId": ""
+  },
+  {
+    "id": "28",
+    "name": "Staff 28",
+    "department": "Dermatology",
+    "position": "reception",
+    "docId": ""
+  },
+  {
+    "id": "29",
+    "name": "Staff 29",
+    "department": "Neurology",
+    "position": "Jr doctor",
+    "docId": ""
+  },
+  {
+    "id": "30",
+    "name": "Staff 30",
+    "department": "Family Medicine",
+    "position": "assistance",
+    "docId": ""
+  },
+  {
+    "id": "31",
+    "name": "Staff 31",
+    "department": "Pediatrics",
+    "position": "reception",
+    "docId": ""
+  }
+]

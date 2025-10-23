@@ -1,103 +1,164 @@
-import Image from "next/image";
+"use client";
 
-export default function Home() {
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useState, useEffect } from "react";
+import { useDispatch } from 'react-redux';
+import { setUserId, setUserName, setHospitalId, setRole } from '../redux/userSlice';
+import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/solid';
+import { useFetch } from "@/lib/fetch";
+
+export default function Login() {
+  const router = useRouter();
+  const dispatch = useDispatch();
+  const [email, setEmail] = useState('arya.sharma@example.com');
+  const [password, setPassword] = useState('password123');
+  const [showPassword, setShowPassword] = useState(false);
+  const [profiles, setProfiles] = useState([]);
+  const { data: categoriesDb, loading, error } = useFetch<any[]>("/api/getData");
+  // Frontend example
+  // const fetchData = async () => {
+  //   const response = await fetch('/api/getData'); // Ensure this matches your route
+  //   const data = await response.json();
+  //   console.log(data);
+  // };
+  // const version = getData();
+  // console.log(version)
+  console.log(categoriesDb)
+
+  useEffect(() => {
+    // fetchData()
+    fetch('/json/profile.json')
+      .then(res => res.json())
+      .then(data => setProfiles(data));
+
+    // Fetch data from getcat API
+    // fetch('/api/getcat')
+    //   .then(res => res.json())
+    //   .then(data => {
+    //     console.log('Fetched data from getcat:', data);
+    //   })
+    //   .catch(error => {
+    //     console.error('Error fetching from getcat:', error);
+    //   });
+  }, []);
   return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
-
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+    <>
+      <div className="flex flex-row items-center justify-center min-h-screen bg-gray-50">
+        <div className="grow flex items-center justify-center">
+          <img src="./loginBanner.png" alt="" className="w-2/3" />
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
-  );
+        <div className="w-1/3">
+
+          <div className="flex min-h-screen flex-col justify-center px-6 py-12 lg:px-8 bg-white">
+            <div className="sm:mx-auto sm:w-full sm:max-w-sm">
+              <img
+                alt="Your Company"
+                src="/FullLogo.png"
+                className="mx-auto h-20 w-auto"
+              />
+              <h2 className="mt-10 text-center text-2xl/9 font-bold tracking-tight text-gray-900">
+                Sign in to your account
+              </h2>
+            </div>
+
+            <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
+              <form action="#" method="POST" className="space-y-6">
+                <div>
+                  <label htmlFor="email" className="block text-sm/6 font-medium text-gray-900">
+                    Email address
+                  </label>
+                  <div className="mt-2">
+                    <input
+                      id="email"
+                      name="email"
+                      type="email"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      //   required
+                      autoComplete="email"
+                      className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-violet-600 sm:text-sm/6"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <div className="flex items-center justify-between">
+                    <label htmlFor="password" className="block text-sm/6 font-medium text-gray-900">
+                      Password
+                    </label>
+                    <div className="text-sm">
+                      <a href="#" className="font-semibold text-violet-600 hover:text-violet-500">
+                        Forgot password?
+                      </a>
+                    </div>
+                  </div>
+                  <div className="mt-2 relative">
+                    <input
+                      id="password"
+                      name="password"
+                      type={showPassword ? "text" : "password"}
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      //   required
+                      autoComplete="current-password"
+                      className="block w-full rounded-md bg-white px-3 py-1.5 pr-10 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-violet-600 sm:text-sm/6"
+                    />
+                    <span
+                      onClick={() => setShowPassword(!showPassword)}
+                      className="absolute inset-y-0 right-0 pr-3 flex items-center"
+                    >
+                      {showPassword ? (
+                        <EyeSlashIcon className="h-5 w-5 text-gray-400" />
+                      ) : (
+                        <EyeIcon className="h-5 w-5 text-gray-400" />
+                      )}
+                    </span>
+                  </div>
+                </div>
+
+                <div>
+                  <button
+                    type="submit"
+                    className="flex w-full justify-center rounded-md bg-violet-600 px-3 py-1.5 text-sm/6 font-semibold text-white shadow-xs hover:bg-violet-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-violet-600"
+                    onClick={async (e) => {
+                      e.preventDefault();
+                      const user = profiles.find((profile: any) => profile.email === email && profile.pwd === password);
+                      if (user) {
+                        // Fetch data from Neon DB dummy table
+                        // try {
+                        //   const response = await fetch('/db/getdummy/1'); // Using 1 as dummy id
+                        //   const data = await response.json();
+                        //   console.log('Fetched data from dummy table:', data);
+                        // } catch (error) {
+                        //   console.error('Error fetching from dummy table:', error);
+                        // }
+
+                        dispatch(setUserId((user as any).id));
+                        dispatch(setUserName((user as any).name));
+                        dispatch(setHospitalId((user as any).hospitals[0].id));
+                        dispatch(setRole((user as any).role));
+                        router.push('/dashboard');
+                      } else {
+                        alert('Invalid email or password');
+                      }
+                    }}
+                  >
+                    Sign in
+                  </button>
+                </div>
+              </form>
+
+              <p className="mt-10 text-center text-sm/6 text-gray-500">
+                Not a member?{' '}
+                <Link href="/" className="font-semibold text-violet-600 hover:text-violet-500">
+                  SignIn
+                </Link>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </>
+  )
 }

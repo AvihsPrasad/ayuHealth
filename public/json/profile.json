@@ -1,0 +1,515 @@
+[
+    {
+        "id": "12345",
+        "hospitals": [
+            {
+                "id": "H001",
+                "name": "AyurHealth Hospital"
+            },
+            {
+                "id": "H002",
+                "name": "HeartCare Clinic"
+            },
+            {
+                "id": "H003",
+                "name": "Sagar Clinic"
+            },
+            {
+                "id": "H004",
+                "name": "Ragu Tippa Clinic"
+            }
+        ],
+        "pwd": "password123",
+        "first_name": "Arya",
+        "last_name": "Sharma",
+        "hospital_name": "AyurHealth Hospital",
+        "name": "Dr. Arya Sharma",
+        "licence": "LIC987654321",
+        "aadhar": "1234-5678-9012",
+        "phone": "+91-9876543210",
+        "email": "arya.sharma@example.com",
+        "address": "123 Ayur Lane, Bengaluru, India",
+        "location": "Bengaluru, India",
+        "country": "India",
+        "state": "Karnataka",
+        "city": "Bengaluru",
+        "pin": "560001",
+        "descp": "Experienced Allopathic practitioner specializing in holistic health and wellness.",
+        "ratings": "4.8",
+        "experience": "12 years",
+        "profession_type": "Pediatrician",
+        "profession-list": [
+            "General Physician",
+            "Pediatrician"
+        ],
+        "specialization": "Child Health, Digestive Disorders, Immunity Boosting",
+        "services": [
+            "Pediatric Consultations",
+            "Herbal Treatments",
+            "Diet and Lifestyle Counseling",
+            "Detox Programs"
+        ],
+        "education": [
+            "MBBS - Bachelor of Medicine and Bachelor of Surgery, Gujarat University",
+            "MD - Doctor of Medicine in Pediatrics, National Institute of Medical Sciences"
+        ],
+        "awards": [
+            "Best Allopathic Practitioner 2020 - Indian Medical Association",
+            "Excellence in Pediatric Care 2018 - Health Awards"
+        ],
+        "languages": [
+            "English",
+            "Hindi",
+            "Kannada"
+        ],
+        "clinic-hours": {
+            "Monday": "9:00 AM - 5:00 PM",
+            "Tuesday": "9:00 AM - 5:00 PM",
+            "Wednesday": "9:00 AM - 5:00 PM",
+            "Thursday": "9:00 AM - 5:00 PM",
+            "Friday": "9:00 AM - 5:00 PM",
+            "Saturday": "10:00 AM - 2:00 PM",
+            "Sunday": "Closed"
+        },
+        "social-links": {
+            "website": "www.aryasharmahealth.com",
+            "linkedin": "linkedin.com/in/aryasharma",
+            "facebook": "facebook.com/aryasharmahealth",
+            "instagram": "instagram.com/aryasharmahealth"
+        },
+        "role": "admin"
+    },
+    {
+        "id": "23456",
+        "hospitals": [
+            {
+                "id": "H001",
+                "name": "AyurHealth Hospital"
+            },
+            {
+                "id": "H002",
+                "name": "HeartCare Clinic"
+            },
+            {
+                "id": "H003",
+                "name": "JointCare Hospital"
+            },
+            {
+                "id": "H004",
+                "name": "SkinCare Clinic"
+            },
+            {
+                "id": "H005",
+                "name": "NeuroCare Hospital"
+            },
+            {
+                "id": "H006",
+                "name": "FamilyCare Clinic"
+            }
+        ],
+        "pwd": "password123",
+        "first_name": "Priya",
+        "last_name": "Menon",
+        "hospital_name": "HeartCare Clinic",
+        "name": "Dr. Priya Menon",
+        "licence": "LIC123456789",
+        "aadhar": "2345-6789-0123",
+        "phone": "+91-9123456780",
+        "email": "priya.menon@example.com",
+        "address": "456 Health Street, Kochi, India",
+        "location": "Kochi, India",
+        "country": "India",
+        "state": "Kerala",
+        "city": "Kochi",
+        "pin": "682001",
+        "descp": "Allopathic Cardiologist with 15 years of experience in heart care.",
+        "ratings": "4.9",
+        "experience": "15 years",
+        "profession_type": "Cardiologist",
+        "profession-list": [
+            "Cardiologist",
+            "General Physician"
+        ],
+        "specialization": "Heart Disease, Hypertension, Preventive Cardiology",
+        "services": [
+            "Cardiac Consultations",
+            "ECG",
+            "Stress Test",
+            "Diet Counseling"
+        ],
+        "education": [
+            "MBBS - Kerala University",
+            "DM - Cardiology, AIIMS Delhi"
+        ],
+        "awards": [
+            "Top Cardiologist 2021 - Kerala Medical Council"
+        ],
+        "languages": [
+            "English",
+            "Malayalam",
+            "Hindi"
+        ],
+        "clinic-hours": {
+            "Monday": "10:00 AM - 6:00 PM",
+            "Tuesday": "10:00 AM - 6:00 PM",
+            "Wednesday": "10:00 AM - 6:00 PM",
+            "Thursday": "10:00 AM - 6:00 PM",
+            "Friday": "10:00 AM - 6:00 PM",
+            "Saturday": "10:00 AM - 2:00 PM",
+            "Sunday": "Closed"
+        },
+        "social-links": {
+            "website": "www.priyamenoncardio.com",
+            "linkedin": "linkedin.com/in/priyamenon",
+            "facebook": "facebook.com/priyamenoncardio",
+            "instagram": "instagram.com/priyamenoncardio"
+        },
+        "role": "medic"
+    },
+    {
+        "id": "34567",
+        "hospitals": [
+            {
+                "id": "H001",
+                "name": "AyurHealth Hospital"
+            },
+            {
+                "id": "H002",
+                "name": "HeartCare Clinic"
+            },
+            {
+                "id": "H003",
+                "name": "JointCare Hospital"
+            },
+            {
+                "id": "H004",
+                "name": "SkinCare Clinic"
+            },
+            {
+                "id": "H005",
+                "name": "NeuroCare Hospital"
+            },
+            {
+                "id": "H006",
+                "name": "FamilyCare Clinic"
+            }
+        ],
+        "pwd": "password123",
+        "first_name": "Rohan",
+        "last_name": "Gupta",
+        "hospital_name": "JointCare Hospital",
+        "name": "Dr. Rohan Gupta",
+        "licence": "LIC567890123",
+        "aadhar": "3456-7890-1234",
+        "phone": "+91-9988776655",
+        "email": "rohan.gupta@example.com",
+        "address": "789 Clinic Road, Delhi, India",
+        "location": "Delhi, India",
+        "country": "India",
+        "state": "Delhi",
+        "city": "Delhi",
+        "pin": "110001",
+        "descp": "Allopathic Orthopedic Surgeon with expertise in joint replacement.",
+        "ratings": "4.7",
+        "experience": "10 years",
+        "profession_type": "Orthopedic Surgeon",
+        "profession-list": [
+            "Orthopedic Surgeon",
+            "Sports Medicine"
+        ],
+        "specialization": "Joint Replacement, Sports Injuries, Bone Health",
+        "services": [
+            "Knee Replacement",
+            "Hip Replacement",
+            "Fracture Treatment",
+            "Sports Injury Rehab"
+        ],
+        "education": [
+            "MBBS - Delhi University",
+            "MS - Orthopedics, PGIMER Chandigarh"
+        ],
+        "awards": [
+            "Best Orthopedic Surgeon 2019 - Delhi Medical Association"
+        ],
+        "languages": [
+            "English",
+            "Hindi"
+        ],
+        "clinic-hours": {
+            "Monday": "8:00 AM - 4:00 PM",
+            "Tuesday": "8:00 AM - 4:00 PM",
+            "Wednesday": "8:00 AM - 4:00 PM",
+            "Thursday": "8:00 AM - 4:00 PM",
+            "Friday": "8:00 AM - 4:00 PM",
+            "Saturday": "9:00 AM - 1:00 PM",
+            "Sunday": "Closed"
+        },
+        "social-links": {
+            "website": "www.rohanguptaortho.com",
+            "linkedin": "linkedin.com/in/rohangupta",
+            "facebook": "facebook.com/rohanguptaortho",
+            "instagram": "instagram.com/rohanguptaortho"
+        },
+        "role": "staff"
+    },
+    {
+        "id": "45678",
+        "hospitals": [
+            {
+                "id": "H001",
+                "name": "AyurHealth Hospital"
+            },
+            {
+                "id": "H002",
+                "name": "HeartCare Clinic"
+            },
+            {
+                "id": "H003",
+                "name": "JointCare Hospital"
+            },
+            {
+                "id": "H004",
+                "name": "SkinCare Clinic"
+            },
+            {
+                "id": "H005",
+                "name": "NeuroCare Hospital"
+            },
+            {
+                "id": "H006",
+                "name": "FamilyCare Clinic"
+            }
+        ],
+        "pwd": "password123",
+        "first_name": "Sneha",
+        "last_name": "Patil",
+        "hospital_name": "SkinCare Clinic",
+        "name": "Dr. Sneha Patil",
+        "licence": "LIC678901234",
+        "aadhar": "4567-8901-2345",
+        "phone": "+91-9876501234",
+        "email": "sneha.patil@example.com",
+        "address": "321 Wellness Ave, Pune, India",
+        "location": "Pune, India",
+        "country": "India",
+        "state": "Maharashtra",
+        "city": "Pune",
+        "pin": "411001",
+        "descp": "Allopathic Dermatologist specializing in skin and hair treatments.",
+        "ratings": "4.6",
+        "experience": "8 years",
+        "profession_type": "Dermatologist",
+        "profession-list": [
+            "Dermatologist",
+            "Cosmetologist"
+        ],
+        "specialization": "Skin Care, Hair Loss, Cosmetic Procedures",
+        "services": [
+            "Skin Consultations",
+            "Laser Treatments",
+            "Hair Restoration",
+            "Cosmetic Procedures"
+        ],
+        "education": [
+            "MBBS - Pune University",
+            "MD - Dermatology, BJ Medical College Pune"
+        ],
+        "awards": [
+            "Young Dermatologist Award 2022 - Pune Medical Society"
+        ],
+        "languages": [
+            "English",
+            "Marathi",
+            "Hindi"
+        ],
+        "clinic-hours": {
+            "Monday": "11:00 AM - 7:00 PM",
+            "Tuesday": "11:00 AM - 7:00 PM",
+            "Wednesday": "11:00 AM - 7:00 PM",
+            "Thursday": "11:00 AM - 7:00 PM",
+            "Friday": "11:00 AM - 7:00 PM",
+            "Saturday": "11:00 AM - 3:00 PM",
+            "Sunday": "Closed"
+        },
+        "social-links": {
+            "website": "www.snehapatilderma.com",
+            "linkedin": "linkedin.com/in/snehapatil",
+            "facebook": "facebook.com/snehapatilderma",
+            "instagram": "instagram.com/snehapatilderma"
+        },
+        "role": "medic"
+    },
+    {
+        "id": "56789",
+        "hospitals": [
+            {
+                "id": "H001",
+                "name": "AyurHealth Hospital"
+            },
+            {
+                "id": "H002",
+                "name": "HeartCare Clinic"
+            },
+            {
+                "id": "H003",
+                "name": "JointCare Hospital"
+            },
+            {
+                "id": "H004",
+                "name": "SkinCare Clinic"
+            },
+            {
+                "id": "H005",
+                "name": "NeuroCare Hospital"
+            },
+            {
+                "id": "H006",
+                "name": "FamilyCare Clinic"
+            }
+        ],
+        "pwd": "password123",
+        "first_name": "Vikram",
+        "last_name": "Singh",
+        "hospital_name": "NeuroCare Hospital",
+        "name": "Dr. Vikram Singh",
+        "licence": "LIC789012345",
+        "aadhar": "5678-9012-3456",
+        "phone": "+91-9001122334",
+        "email": "vikram.singh@example.com",
+        "address": "654 Care Blvd, Jaipur, India",
+        "location": "Jaipur, India",
+        "country": "India",
+        "state": "Rajasthan",
+        "city": "Jaipur",
+        "pin": "302001",
+        "descp": "Allopathic Neurologist with a focus on brain and nerve disorders.",
+        "ratings": "4.9",
+        "experience": "14 years",
+        "profession_type": "Neurologist",
+        "profession-list": [
+            "Neurologist",
+            "General Physician"
+        ],
+        "specialization": "Brain Disorders, Stroke, Epilepsy",
+        "services": [
+            "Neurology Consultations",
+            "EEG",
+            "Stroke Management",
+            "Epilepsy Treatment"
+        ],
+        "education": [
+            "MBBS - Rajasthan University",
+            "DM - Neurology, NIMHANS Bangalore"
+        ],
+        "awards": [
+            "Best Neurologist 2023 - Jaipur Medical Association"
+        ],
+        "languages": [
+            "English",
+            "Hindi"
+        ],
+        "clinic-hours": {
+            "Monday": "9:00 AM - 5:00 PM",
+            "Tuesday": "9:00 AM - 5:00 PM",
+            "Wednesday": "9:00 AM - 5:00 PM",
+            "Thursday": "9:00 AM - 5:00 PM",
+            "Friday": "9:00 AM - 5:00 PM",
+            "Saturday": "10:00 AM - 2:00 PM",
+            "Sunday": "Closed"
+        },
+        "social-links": {
+            "website": "www.vikramsinghneuro.com",
+            "linkedin": "linkedin.com/in/vikramsingh",
+            "facebook": "facebook.com/vikramsinghneuro",
+            "instagram": "instagram.com/vikramsinghneuro"
+        },
+        "role": "admin"
+    },
+    {
+        "id": "67890",
+        "hospitals": [
+            {
+                "id": "H001",
+                "name": "AyurHealth Hospital"
+            },
+            {
+                "id": "H002",
+                "name": "HeartCare Clinic"
+            },
+            {
+                "id": "H003",
+                "name": "JointCare Hospital"
+            },
+            {
+                "id": "H004",
+                "name": "SkinCare Clinic"
+            },
+            {
+                "id": "H005",
+                "name": "NeuroCare Hospital"
+            },
+            {
+                "id": "H006",
+                "name": "FamilyCare Clinic"
+            }
+        ],
+        "pwd": "password123",
+        "first_name": "Meera",
+        "last_name": "Joshi",
+        "hospital_name": "FamilyCare Clinic",
+        "name": "Dr. Meera Joshi",
+        "licence": "LIC890123456",
+        "aadhar": "6789-0123-4567",
+        "phone": "+91-9887766554",
+        "email": "meera.joshi@example.com",
+        "address": "987 Family Clinic, Ahmedabad, India",
+        "location": "Ahmedabad, India",
+        "country": "India",
+        "state": "Gujarat",
+        "city": "Ahmedabad",
+        "pin": "380001",
+        "descp": "Allopathic Family Physician providing comprehensive care for all ages.",
+        "ratings": "4.5",
+        "experience": "11 years",
+        "profession_type": "Family Physician",
+        "profession-list": [
+            "Family Physician",
+            "General Physician"
+        ],
+        "specialization": "General Medicine, Preventive Care, Chronic Disease Management",
+        "services": [
+            "General Consultations",
+            "Preventive Health Checks",
+            "Chronic Disease Management",
+            "Vaccinations"
+        ],
+        "education": [
+            "MBBS - Gujarat University",
+            "MD - Family Medicine, CMC Vellore"
+        ],
+        "awards": [
+            "Best Family Physician 2022 - Ahmedabad Medical Council"
+        ],
+        "languages": [
+            "English",
+            "Gujarati",
+            "Hindi"
+        ],
+        "clinic-hours": {
+            "Monday": "8:00 AM - 4:00 PM",
+            "Tuesday": "8:00 AM - 4:00 PM",
+            "Wednesday": "8:00 AM - 4:00 PM",
+            "Thursday": "8:00 AM - 4:00 PM",
+            "Friday": "8:00 AM - 4:00 PM",
+            "Saturday": "9:00 AM - 1:00 PM",
+            "Sunday": "Closed"
+        },
+        "social-links": {
+            "website": "www.meerajoshifamilycare.com",
+            "linkedin": "linkedin.com/in/meerajoshi",
+            "facebook": "facebook.com/meerajoshifamilycare",
+            "instagram": "instagram.com/meerajoshifamilycare"
+        },
+        "role": "staff"
+    }
+]
