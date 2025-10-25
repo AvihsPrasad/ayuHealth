@@ -220,7 +220,7 @@ function PatientLists({ appointments, doctors }: { appointments: AppointmentType
   return (
     <div className="overflow-auto h-[calc(100vh-210px)]">
       {appointments.map((appointment) => (
-        <div key={appointment.id} className="bg-white p-4 rounded-lg border-[1.5px] border-gray-300 mb-2 hover:shadow-md transition-shadow">
+        <div key={appointment.id} className="bg-white cursor-pointer p-4 rounded-lg border-[1.5px] border-gray-300 mb-2 hover:shadow-md transition-shadow">
           <div className='flex flex-row gap-4'>
             <div className="text-sm text-blue-600 bg-blue-50 p-1 px-3 border-[1px] border-blue-400 rounded-md flex flex-row gap-2 justify-center items-center w-fit">
               <div><TicketIcon className='size-4' /></div>
@@ -231,14 +231,14 @@ function PatientLists({ appointments, doctors }: { appointments: AppointmentType
               {/* <div className="text-sm text-gray-500">{appointment.age} years</div> */}
               <div className="text-sm text-gray-500 flex-2">{getDoctorName(appointment.doctor_id)}</div>
             </div>
-            <div>
+            <div className=' flex items-center'>
               <span className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ${appointment.status === 'pending' ? 'bg-yellow-400/10 text-yellow-400 inset-ring inset-ring-yellow-400/20' :
                 appointment.status === 'completed' ? 'bg-green-400/10 text-green-400 inset-ring inset-ring-green-400/20' :
                   appointment.status === 'cancelled' ? 'bg-red-400/10 text-red-400 inset-ring inset-ring-red-400/20' :
                     'bg-gray-100 text-gray-800'
                 }` }>{appointment.status}</span>
             </div>
-            <div className="text-right">
+            <div className="text-right flex items-center">
               <p className="text-sm text-gray-500">{appointment.date} {appointment.time}</p>
 
             </div>

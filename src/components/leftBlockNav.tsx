@@ -7,8 +7,11 @@ import Link from 'next/link'
 import React from 'react'
 import { useSelector } from 'react-redux'
 import { RootState } from '../redux/store'
+import { useClerk, useUser } from '@clerk/nextjs';
 
 function LeftBlockNav() {
+    const { signOut } = useClerk();
+    const { user } = useUser();
     const userId = useSelector((state: RootState) => state.user.userId)
     const userName = useSelector((state: RootState) => state.user.userName)
     const hospitalId = useSelector((state: RootState) => state.user.hospitalId)
@@ -63,8 +66,8 @@ function LeftBlockNav() {
                         <span className="absolute -inset-1.5" />
                         <span className="sr-only">Open user menu</span>
                         <img
-                            alt=""
-                            src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+                            alt="img"
+                            src={user?.imageUrl}
                             className="size-8 rounded-full bg-gray-800 outline -outline-offset-1 outline-white/10"
                         />
                         <ChevronDownIcon aria-hidden="true" className="size-5 text-gray-500 ml-1 mt-1" />
@@ -107,12 +110,12 @@ function LeftBlockNav() {
                             </Link>
                         </MenuItem>
                         <MenuItem>
-                            <Link
-                                href="/"
-                                className="flex flex-row items-center gap-3 px-4 py-2 text-sm text-gray-500 hover:text-gray-800 hover:font-semibold data-focus:bg-gray-200 data-focus:outline-hidden"
+                            <button
+                                className="flex flex-row w-full items-center gap-3 px-4 py-2 text-sm text-gray-500 hover:text-gray-800 hover:font-semibold data-focus:bg-gray-200 data-focus:outline-hidden"
+                                onClick={async () => await signOut({ redirectUrl: '/' })}
                             >
                                 <ArrowRightStartOnRectangleIcon className='size-5' /> Sign out
-                            </Link>
+                            </button>
                         </MenuItem>
                     </MenuItems>
                 </Menu>

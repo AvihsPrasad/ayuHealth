@@ -7,8 +7,14 @@ import Image from "next/image";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { useUser } from "@clerk/nextjs";
+import { useDispatch } from 'react-redux';
+import { setUserId, setUserName, setHospitalId, setRole } from '../../redux/userSlice';
 
 export default function Home() {
+  const { user } = useUser();
+  const dispatch = useDispatch();
+
   const router = useRouter();
   const [profiles, setProfiles] = useState<any[]>([]);
   const [staff, setStaff] = useState<any[]>([]);
@@ -25,13 +31,23 @@ export default function Home() {
     fetch('/json/staff.json')
       .then(res => res.json())
       .then(data => setStaff(data));
-  }, []);
+
+    // Update Redux with user details from Clerk
+    if (user) {
+      dispatch(setUserId(user.id));
+      dispatch(setUserName(user.username + ''));
+      // Assuming hospitalId and role are stored in user metadata or need to be fetched
+      // dispatch(setHospitalId(user.publicMetadata.hospitalId || ''));
+      // dispatch(setRole(user.publicMetadata.role || ''));
+    }
+  }, [user, dispatch]);
 
   const toggleAccordion = (index: number) => {
     setOpenIndex(openIndex === index ? null : index);
   };
   return (
     <div className="overflow-y-auto max-h-[calc(100vh-96px)] p-4">
+      <p className="text-2xl font-bold mb-4">Hi!  {user?.username}</p>
       <div className="flex flex-row items-center gap-4 mb-8 inset-ring-2 inset-ring-violet-400 p-6 px-10 rounded-md bg-violet-100">
         <p className="font-medium text-base flex-1">To continue further please complete your profile by providing appropriate informations as requested.</p>
         <button

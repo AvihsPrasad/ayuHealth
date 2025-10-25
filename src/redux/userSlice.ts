@@ -3,6 +3,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 interface UserState {
   userId: string
   userName: string
+  firstName: string
   hospitalId: string
   role: string
   isCollapsed: boolean
@@ -11,6 +12,7 @@ interface UserState {
 const initialState: UserState = {
   userId: '',
   userName: '',
+  firstName: '',
   hospitalId: '',
   role: '',
   isCollapsed: false,
@@ -26,6 +28,9 @@ const userSlice = createSlice({
     setUserName: (state, action: PayloadAction<string>) => {
       state.userName = action.payload
     },
+    setFirstName: (state, action: PayloadAction<string>) => {
+      state.firstName = action.payload
+    },
     setHospitalId: (state, action: PayloadAction<string>) => {
       state.hospitalId = action.payload
     },
@@ -35,6 +40,7 @@ const userSlice = createSlice({
     setUser: (state, action: PayloadAction<UserState>) => {
       state.userId = action.payload.userId
       state.userName = action.payload.userName
+      state.firstName = action.payload.firstName
       state.hospitalId = action.payload.hospitalId
       state.role = action.payload.role
       state.isCollapsed = action.payload.isCollapsed
@@ -45,5 +51,5 @@ const userSlice = createSlice({
   },
 })
 
-export const { setUserId, setUserName, setHospitalId, setRole, setUser, setIsCollapsed } = userSlice.actions
+export const { setUserId, setUserName, setFirstName, setHospitalId, setRole, setUser, setIsCollapsed } = userSlice.actions
 export default userSlice.reducer

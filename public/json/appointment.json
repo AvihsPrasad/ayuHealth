@@ -7,7 +7,7 @@
     "aadhar": "1234-5678-9012",
     "date": "2025-10-12",
     "time": "10:00 AM",
-    "doctor_id": "12345",
+    "doctor_id": "user_34SktYkBcPdcBWEN25ngHu8Xxzi",
     "hospital_id": "H001",
     "status": "pending"
   },
@@ -43,7 +43,7 @@
     "aadhar": "4567-8901-2345",
     "date": "2025-10-13",
     "time": "02:00 PM",
-    "doctor_id": "12345",
+    "doctor_id": "user_34SktYkBcPdcBWEN25ngHu8Xxzi",
     "hospital_id": "H002",
     "status": "cancelled"
   },
@@ -67,7 +67,7 @@
     "aadhar": "6789-0123-4567",
     "date": "2024-10-15",
     "time": "12:00 PM",
-    "doctor_id": "12345",
+    "doctor_id": "user_34SktYkBcPdcBWEN25ngHu8Xxzi",
     "hospital_id": "H002",
     "status": "pending"
   },
@@ -103,7 +103,7 @@
     "aadhar": "9012-3456-7890",
     "date": "2025-10-18",
     "time": "04:00 PM",
-    "doctor_id": "12345",
+    "doctor_id": "user_34SktYkBcPdcBWEN25ngHu8Xxzi",
     "hospital_id": "H003",
     "status": "cancelled"
   },
@@ -139,7 +139,7 @@
     "aadhar": "2345-6789-0123",
     "date": "2025-10-20",
     "time": "11:00 AM",
-    "doctor_id": "12345",
+    "doctor_id": "user_34SktYkBcPdcBWEN25ngHu8Xxzi",
     "hospital_id": "H004",
     "status": "pending"
   },
@@ -175,7 +175,7 @@
     "aadhar": "5678-9012-3456",
     "date": "2024-10-15",
     "time": "03:00 PM",
-    "doctor_id": "12345",
+    "doctor_id": "user_34SktYkBcPdcBWEN25ngHu8Xxzi",
     "hospital_id": "H004",
     "status": "completed"
   },
@@ -211,7 +211,7 @@
     "aadhar": "8901-2345-6789",
     "date": "2025-10-23",
     "time": "09:00 AM",
-    "doctor_id": "12345",
+    "doctor_id": "user_34SktYkBcPdcBWEN25ngHu8Xxzi",
     "hospital_id": "H004",
     "status": "pending"
   },
@@ -247,7 +247,7 @@
     "aadhar": "1234-5678-9012",
     "date": "2025-10-24",
     "time": "01:00 PM",
-    "doctor_id": "12345",
+    "doctor_id": "user_34SktYkBcPdcBWEN25ngHu8Xxzi",
     "hospital_id": "H001",
     "status": "cancelled"
   },
@@ -283,7 +283,7 @@
     "aadhar": "4567-8901-2345",
     "date": "2025-10-26",
     "time": "12:00 PM",
-    "doctor_id": "12345",
+    "doctor_id": "user_34SktYkBcPdcBWEN25ngHu8Xxzi",
     "hospital_id": "H001",
     "status": "pending"
   },
