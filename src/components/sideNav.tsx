@@ -21,7 +21,7 @@ function SideNav({ isCollapsed }: { isCollapsed: boolean }) {
     return (
         <div className="flex flex-col bg-white h-full overflow-y-auto after:pointer-events-none after:absolute after:inset-x-0 after:bottom-0 after:h-px after:bg-white/10">
             <div className={`flex flex-row w-full justify-center items-center h-16 italic font-bold text-xl bg-neutral-300`}>
-                {isCollapsed && <img alt="Your Company" src="/FullLogo.png" className="h-10 w-auto"/>}
+                {isCollapsed && <img alt="Your Company" src="/FullLogo.png" className="h-10 w-auto "/>}
                 {!isCollapsed && (<div className='flex flex-row gap-2 justify-center items-center'>
                 <img alt="Your Company" src="/FullLogo.png" className="mx-auto h-10 w-auto"/>
                 <span className=''>AyuHealth</span>

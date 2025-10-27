@@ -30,7 +30,7 @@ export default function DashboardLayout({
             <AdBanner />
             {/* <Header /> */}
             <div className="flex flex-row">
-                <div className={`h-screen sticky top-0 transition-all duration-300 ${localCollapsed ? 'w-[100px]' : 'w-[250px]'}`}>
+                <div className={`h-screen top-0 relative z-10 transition-all duration-500 ease-in-out ${localCollapsed ? 'w-[100px]' : 'w-[250px]'}`}>
                     <SideNav isCollapsed={localCollapsed} />
                     <button
                         onClick={() => {

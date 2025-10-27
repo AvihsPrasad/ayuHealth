@@ -8,8 +8,9 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useUser } from "@clerk/nextjs";
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { setUserId, setUserName, setHospitalId, setRole } from '../../redux/userSlice';
+import { RootState } from "@/redux/store";
 
 export default function Home() {
   const { user } = useUser();
@@ -21,25 +22,32 @@ export default function Home() {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
   const [open, setOpen] = useState(true);
 
-  const userId = typeof window !== 'undefined' ? localStorage.getItem('userId') : null;
-  const matchingStaff = staff.filter(s => s.docId === userId);
+  const userId = useSelector((state: RootState) => state.user.userId)
+  
 
   useEffect(() => {
-    fetch('/json/profile.json')
-      .then(res => res.json())
-      .then(data => setProfiles(data));
-    fetch('/json/staff.json')
-      .then(res => res.json())
-      .then(data => setStaff(data));
-
-    // Update Redux with user details from Clerk
     if (user) {
+      console.log(user.id)
       dispatch(setUserId(user.id));
       dispatch(setUserName(user.username + ''));
       // Assuming hospitalId and role are stored in user metadata or need to be fetched
       // dispatch(setHospitalId(user.publicMetadata.hospitalId || ''));
       // dispatch(setRole(user.publicMetadata.role || ''));
     }
+    fetch('/json/profile.json')
+      .then(res => res.json())
+      .then(data => setProfiles(data));
+    fetch('/json/staff.json')
+      .then(res => res.json())
+      .then(data => {
+        console.log(userId)
+        // console.log(data)
+        const matchingStaff = data.filter((s: any) => s.docId === userId);
+        // console.log(matchingStaff)
+        setStaff(matchingStaff)
+      });
+
+    // Update Redux with user details from Clerk
   }, [user, dispatch]);
 
   const toggleAccordion = (index: number) => {
@@ -57,8 +65,8 @@ export default function Home() {
           Complete Profile
         </button>
       </div>
-      <div className="grid grid-cols-4 gap-5">
-        <div className="col-span-3 space-y-6 ">
+      <div className="grid grid-cols-4 xl:grid-cols-5 gap-5">
+        <div className="col-span-2 xl:col-span-3 space-y-6 ">
           <div className="grid grid-cols-2 gap-4">
             {/* info cards */}
             <Link href={'/dashboard/patients'} className="cursor-pointer bg-white p-4 ring-1.5 ring-gray-300 rounded-md flex flex-row gap-3">
@@ -89,7 +97,7 @@ export default function Home() {
             </div>
           </div>
         </div>
-        <div className="col-span-1 space-y-6">
+        <div className="col-span-2 xl:col-span-2 space-y-6">
           <div className="bg-white rounded-lg ring-1.5 ring-gray-300">
             <div className="text-md font-bold flex flex-row p-4 border-b-1 border-gray-200 justify-center items-center gap-2">
               <div className="grow">Staff</div>
@@ -98,9 +106,9 @@ export default function Home() {
               </button>
             </div>
             <div className={`bg-white ring-1.5 ring-gray-300 p-4 rounded-b-lg transition-all duration-500 ease-in-out ${open ? 'opacity-100 max-h-96' : 'opacity-0 max-h-0 overflow-hidden'}`}>
-              {matchingStaff.length > 0 ? (
-                matchingStaff.map((s, index) => (
-                  <div key={s.id} className={`flex flex-row gap-4 pb-3 mb-3 ${index < matchingStaff.length - 1 ? 'border-b-1 border-gray-200' : ''}`}>
+              {staff.length > 0 ? (
+                staff.map((s, index) => (
+                  <div key={s.id} className={`flex flex-row gap-4 pb-3 mb-3 ${index < staff.length - 1 ? 'border-b-1 border-gray-200' : ''}`}>
                     <div className="flex items-center justify-center">
                       <div className="p-1.5 ring-1 ring-blue-300 text-blue-500 bg-blue-50 rounded-lg min-w-8 min-h-8 justify-center items-center flex">
                         <UserIcon className="size-5" />
