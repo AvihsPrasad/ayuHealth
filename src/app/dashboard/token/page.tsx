@@ -88,7 +88,8 @@ function Token() {
 
   return (
     <div className='p-4'>
-      <div className='flex flex-row gap-4'>
+      {loading && <div className='animate-pulse'>Loading appointments...</div>}
+      {!loading && <div className='flex flex-row gap-4'>
         {/* Left side - Appointments list */}
         <div className=''>
           {/* <h2 className='text-base font-semibold mb-4'>Appointments</h2> */}
@@ -355,7 +356,7 @@ function Token() {
             </div>
           )}
         </div>
-      </div>
+      </div>}
     </div>
   )
 }

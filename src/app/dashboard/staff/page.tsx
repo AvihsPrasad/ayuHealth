@@ -71,7 +71,9 @@ export default function Staff() {
         </button>
       </div>
       {/* list of staff as a cards  */}
-      <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 overflow-y-auto max-h-[calc(100vh-200px)]'>
+      {loading && <div className='animate-pulse'>Loading appointments...</div>}
+
+      {!loading && <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 overflow-y-auto max-h-[calc(100vh-200px)]'>
         {filteredStaff.map((staffMember) => (
           <div key={staffMember.id} className="bg-white p-4 rounded-md inset-ring-1 inset-ring-gray-300">
             <div className="flex flex-col gap-4">
@@ -99,7 +101,7 @@ export default function Staff() {
               </button>
           </div>
         ))}
-      </div>
+      </div>}
     </div>
   )
 }

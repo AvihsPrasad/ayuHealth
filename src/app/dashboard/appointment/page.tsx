@@ -402,7 +402,9 @@ function Appointment() {
         </button>
       </div>
 
-      <PatientLists appointments={filteredAppointments} doctors={doctors} />
+      {loading && <div className='animate-pulse'>Loading appointments...</div>}
+
+      {!loading && <PatientLists appointments={filteredAppointments} doctors={doctors} />}
 
       <AddAppointmentModal open={open} setOpen={setOpen} onAddAppointment={handleAddAppointment} appointments={appointments} doctors={doctors} />
     </div>
