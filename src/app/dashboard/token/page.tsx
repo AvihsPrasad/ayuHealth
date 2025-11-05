@@ -4,24 +4,32 @@ import { useSelector } from 'react-redux'
 import { RootState } from '../../../redux/store'
 import { MagnifyingGlassIcon, PlusIcon, TrashIcon, XMarkIcon } from '@heroicons/react/20/solid'
 import { useRouter } from 'next/navigation'
+import { useFetch } from '@/lib/fetch'
 
 interface AppointmentType {
   id: string;
   token_no: string;
-  patient_name: string;
+  firstName: string;
+  lastName: string;
   age: number;
   aadhar: string;
-  date: string;
-  time: string;
+  schedule: string;
   doctor_id: string;
   hospital_id: string;
   status: string;
 }
 
 function Token() {
+  const formatDate = (dateString: string) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString('en-GB'); // dd/mm/yyyy
+  };
+
   const userId = useSelector((state: RootState) => state.user.userId)
   const userName = useSelector((state: RootState) => state.user.userName)
   const hospitalId = useSelector((state: RootState) => state.user.hospitalId)
+  console.log('hospitalId in token page:', hospitalId)
+  console.log('userId in token page:', userId)
   const router = useRouter()
   const [appointments, setAppointments] = useState<AppointmentType[]>([])
   const [selectedAppointment, setSelectedAppointment] = useState<AppointmentType | null>(null)
@@ -35,19 +43,19 @@ function Token() {
   const [tempMedicine, setTempMedicine] = useState('')
   const [tempFrequency, setTempFrequency] = useState('')
   const [tempDuration, setTempDuration] = useState('')
+  const reduuxUserDetails = useSelector((state: RootState) => state.user)
+
+  const { data: appontmentdbData, loading, error } = useFetch<any[]>(`/api/getappointments?doctor_id=${reduuxUserDetails.userdbId}&hospital_id=1`);
 
   useEffect(() => {
-    fetch('/json/appointment.json')
-      .then(response => response.json())
-      .then(data => {
-        const filteredAppointments = data.filter((appointment: AppointmentType) => appointment.doctor_id === userId && appointment.hospital_id === hospitalId)
-        setAppointments(filteredAppointments)
-        if (filteredAppointments.length > 0) {
-          setSelectedAppointment(filteredAppointments[0])
-        }
-      })
-      .catch(error => console.error('Error fetching appointments:', error))
-  }, [userId, hospitalId])
+    if (appontmentdbData && appontmentdbData.length > 0) {
+      setAppointments(appontmentdbData);
+      console.log('appontmentdbData', appontmentdbData);
+      if (appontmentdbData.length > 0) {
+        setSelectedAppointment(appontmentdbData[0])
+      }
+    }
+  }, [appontmentdbData])
 
   const handleAppointmentClick = (appointment: AppointmentType) => {
     setSelectedAppointment(appointment)
@@ -69,7 +77,7 @@ function Token() {
   const handleFormSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     // In a real app, this would be an API call to add to patient history
-    console.log('Adding to patient history:', formData)
+    // console.log('Adding to patient history:', formData)
     setFormData({ sickness: '', treat: [], scaning: null })
     setTempTreatment('')
     setTempMedicine('')
@@ -96,12 +104,11 @@ function Token() {
               >
                 <div className='flex flex-row justify-between items-center'>
                   <div>
-                    <div className='font-medium pr-6'>{appointment.patient_name}</div>
+                    <div className='font-medium pr-6'>{appointment.firstName} {appointment.lastName}</div>
                     <div className='text-sm text-gray-500'>Token: {appointment.token_no}</div>
                   </div>
                   <div className='text-right'>
-                    <div className='text-sm'>{appointment.date}</div>
-                    <div className='text-sm text-gray-500'>{appointment.time}</div>
+                    <div className='text-sm'>{formatDate(appointment.schedule)}</div>
                   </div>
                 </div>
               </div>
@@ -133,7 +140,7 @@ function Token() {
                 </div>
                 <div>
                   <label className='block text-sm font-medium text-gray-700'>Patient Name</label>
-                  <div className='text-base'>{selectedAppointment.patient_name}</div>
+                  <div className='text-base'>{selectedAppointment.firstName} {selectedAppointment.lastName}</div>
                 </div>
                 <div>
                   <label className='block text-sm font-medium text-gray-700'>Age</label>
@@ -152,12 +159,8 @@ function Token() {
                   </div>
                 </div>
                 <div>
-                  <label className='block text-sm font-medium text-gray-700'>Date</label>
-                  <div className='text-base'>{selectedAppointment.date}</div>
-                </div>
-                <div>
-                  <label className='block text-sm font-medium text-gray-700'>Time</label>
-                  <div className='text-base'>{selectedAppointment.time}</div>
+                  <label className='block text-sm font-medium text-gray-700'>Schedule</label>
+                  <div className='text-base'>{formatDate(selectedAppointment.schedule)}</div>
                 </div>
                 <div>
                   <label className='block text-sm font-medium text-gray-700'>Doctor</label>

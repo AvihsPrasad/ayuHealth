@@ -3,40 +3,37 @@ import { EllipsisVerticalIcon, MagnifyingGlassCircleIcon, PhoneIcon, PhotoIcon, 
 import React, { useState, useEffect, useMemo } from 'react'
 import { useSelector } from 'react-redux'
 import { RootState } from '../../../redux/store'
+import { useFetch } from '@/lib/fetch'
 
 interface StaffType {
   id: string;
   name: string;
-  department: string;
-  position: string;
-  docId: string;
+  email: string;
+  phone: string;
+  role: string;
+  hospital_id: string;
+  department?: string;
 }
 
 export default function Staff() {
   const userId = useSelector((state: RootState) => state.user.userId)
   const [staff, setStaff] = useState<StaffType[]>([])
-  const [searchQuery, setSearchQuery] = useState('')
+  const [searchQuery, setSearchQuery] = useState('');
+  const { data: staffDBdata, loading, error } = useFetch<any[]>(`/api/getstaff?hospital_id=1`);
+  console.log('staffDBdata', staffDBdata);
 
   useEffect(() => {
-    fetch('/json/staff.json')
-      .then(response => response.json())
-      .then(data => {
-        if (userId) {
-          const filteredData = data.filter((staffMember: StaffType) => staffMember.docId === userId);
-          setStaff(filteredData);
-        } else {
-          setStaff(data);
-        }
-      })
-      .catch(error => console.error('Error fetching staff:', error))
-  }, [userId])
+    if (staffDBdata && staffDBdata.length > 0) {
+      setStaff(staffDBdata);
+    }
+  }, [staffDBdata])
 
   const filteredStaff = useMemo(() => {
     return staff.filter(staffMember =>
       staffMember.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
       staffMember.id.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      staffMember.department.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      staffMember.position.toLowerCase().includes(searchQuery.toLowerCase())
+      staffMember.role.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      (staffMember.department && staffMember.department.toLowerCase().includes(searchQuery.toLowerCase()))
     );
   }, [staff, searchQuery]);
 
@@ -74,7 +71,7 @@ export default function Staff() {
         </button>
       </div>
       {/* list of staff as a cards  */}
-      <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 overflow-y-auto max-h-[calc(100vh-180px)]'>
+      <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 overflow-y-auto max-h-[calc(100vh-200px)]'>
         {filteredStaff.map((staffMember) => (
           <div key={staffMember.id} className="bg-white p-4 rounded-md inset-ring-1 inset-ring-gray-300">
             <div className="flex flex-col gap-4">
@@ -85,7 +82,7 @@ export default function Staff() {
               </div>
               <div>
                 <div className="text-base font-medium">{staffMember.name}</div>
-                <div className="text-sm font-medium text-gray-400">{staffMember.department}</div>
+                <div className="text-sm font-medium text-gray-400">{staffMember.role}</div>
               </div>
             </div>
             <div className="flex flex-row mt-5">

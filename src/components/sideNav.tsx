@@ -3,21 +3,29 @@ import Link from 'next/link';
 import React from 'react';
 import { usePathname } from 'next/navigation';
 import { ArrowLeftIcon, BriefcaseIcon, BuildingStorefrontIcon, CalculatorIcon, CalendarDaysIcon, GiftIcon, HomeIcon, Squares2X2Icon, UserGroupIcon } from '@heroicons/react/20/solid';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/redux/store';
 
-const sidebarLinks = [
-    { name: 'Dashboard', href: '/dashboard', Icon: <Squares2X2Icon aria-hidden="true" className="size-6" /> },
-    { name: 'Tokens', href: '/dashboard/token', Icon: <CalculatorIcon aria-hidden="true" className="size-6" /> },
-    { name: 'Appointments', href: '/dashboard/appointment', Icon: <CalendarDaysIcon aria-hidden="true" className="size-6" /> },
-    { name: 'Patients', href: '/dashboard/patients', Icon: <UserGroupIcon aria-hidden="true" className="size-6" /> },
-    { name: 'Staff', href: '/dashboard/staff', Icon: <BriefcaseIcon aria-hidden="true" className="size-6" /> },
-    // { name: 'Depatment', href: '/dashboard/department', Icon: <BuildingStorefrontIcon aria-hidden="true" className="size-6" /> },
-    // { name: 'Events', href: '/dashboard/events', Icon: <GiftIcon aria-hidden="true" className="size-6" /> },
-];
+const getSidebarLinks = (role: string) => {
+    const allLinks = [
+        { name: 'Dashboard', href: '/dashboard', Icon: <Squares2X2Icon aria-hidden="true" className="size-6" />, roles: ['admin', 'medic', 'staff'] },
+        { name: 'Tokens', href: '/dashboard/token', Icon: <CalculatorIcon aria-hidden="true" className="size-6" />, roles: ['admin'] },
+        { name: 'Appointments', href: '/dashboard/appointment', Icon: <CalendarDaysIcon aria-hidden="true" className="size-6" />, roles: ['admin', 'medic', 'staff'] },
+        { name: 'Patients', href: '/dashboard/patients', Icon: <UserGroupIcon aria-hidden="true" className="size-6" />, roles: ['admin', 'medic'] },
+        { name: 'Staff', href: '/dashboard/staff', Icon: <BriefcaseIcon aria-hidden="true" className="size-6" />, roles: ['admin'] },
+        // { name: 'Depatment', href: '/dashboard/department', Icon: <BuildingStorefrontIcon aria-hidden="true" className="size-6" /> },
+        // { name: 'Events', href: '/dashboard/events', Icon: <GiftIcon aria-hidden="true" className="size-6" /> },
+    ];
+    return allLinks.filter(link => link.roles.includes(role));
+};
 
 
 
 function SideNav({ isCollapsed }: { isCollapsed: boolean }) {
     const pathname = usePathname();
+    const role = useSelector((state: RootState) => state.user.role);
+    const sidebarLinks = getSidebarLinks(role);
+
     return (
         <div className="flex flex-col bg-white h-full overflow-y-auto after:pointer-events-none after:absolute after:inset-x-0 after:bottom-0 after:h-px after:bg-white/10">
             <div className={`flex flex-row w-full justify-center items-center h-16 italic font-bold text-xl bg-neutral-300`}>

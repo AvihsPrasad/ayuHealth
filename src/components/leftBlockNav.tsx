@@ -5,9 +5,10 @@ import { ArrowRightEndOnRectangleIcon, ArrowRightStartOnRectangleIcon, CreditCar
 import { BellIcon, ChevronDownIcon } from '@heroicons/react/24/outline'
 import Link from 'next/link'
 import React from 'react'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import { RootState } from '../redux/store'
 import { useClerk, useUser } from '@clerk/nextjs';
+import { persistor } from '../redux/store';
 
 function LeftBlockNav() {
     const { signOut } = useClerk();

@@ -9,6 +9,9 @@ import { useState, useEffect } from "react"
 import { useSelector, useDispatch } from 'react-redux'
 import { RootState } from '@/redux/store'
 import { setIsCollapsed } from '@/redux/userSlice'
+// import { useFetchUserRole } from '@/lib/hooks'
+import { useFetch } from "@/lib/fetch"
+import { useUser } from "@clerk/nextjs"
 
 export default function DashboardLayout({
     children, // will be a page or nested layout
@@ -16,8 +19,14 @@ export default function DashboardLayout({
     children: React.ReactNode
 }) {
     const dispatch = useDispatch()
+    const { user } = useUser();
     const isCollapsed = useSelector((state: RootState) => state.user.isCollapsed)
     const [localCollapsed, setLocalCollapsed] = useState(false)
+    const userId = useSelector((state: RootState) => state.user.userId)
+
+    // const { data: categoriesDb, loading, error } = useFetch<any[]>(`/api/getDoctorData?id=${userId}`);
+
+    // useFetchUserRole(categoriesDb)
 
     useEffect(() => {
         setLocalCollapsed(isCollapsed)

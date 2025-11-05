@@ -1,4 +1,5 @@
 'use client'
+import { useFetch } from '@/lib/fetch';
 import { EllipsisVerticalIcon, MagnifyingGlassCircleIcon, PhoneIcon, PlusIcon, XMarkIcon } from '@heroicons/react/20/solid'
 import { useRouter } from 'next/navigation';
 import React, { useState, useEffect, useMemo } from 'react'
@@ -23,13 +24,13 @@ export default function Patients() {
   const [patients, setPatients] = useState<PatientType[]>([])
   const [searchQuery, setSearchQuery] = useState('')
   const [sortBy, setSortBy] = useState('')
+    const { data: patientDbData, loading, error } = useFetch<any[]>(`/api/getpatients`);
 
   useEffect(() => {
-    fetch('/json/patients.json')
-      .then(response => response.json())
-      .then(data => setPatients(data))
-      .catch(error => console.error('Error fetching patients:', error))
-  }, [])
+    if (patientDbData && patientDbData.length > 0) {
+      setPatients(patientDbData);
+    }
+  }, [patientDbData])
 
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search)

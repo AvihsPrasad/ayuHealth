@@ -17,7 +17,7 @@ export default function Profile() {
   const params = useParams()
   const searchParams = useSearchParams()
   const dispatch = useDispatch()
-  const userId = useSelector((state: RootState) => state.user.userId)
+  const reduuxUserDetails = useSelector((state: RootState) => state.user)
   const currentHospitalId = useSelector((state: RootState) => state.user.hospitalId)
   const [profiles, setProfiles] = useState<any[]>([])
   const [user, setUser] = useState<any>(null)
@@ -73,53 +73,76 @@ export default function Profile() {
     if (tab) setActiveTab(tab)
   }, [searchParams])
 
+  console.log(reduuxUserDetails)
+
   // No need for this useEffect since we're using Redux
 
   useEffect(() => {
-    fetch('/json/profile.json')
-      .then(res => res.json())
-      .then(data => {
-        setProfiles(data)
-        const found = data.find((p: any) => p.id === params.id)
-        setUser(found)
-        if (found) {
-          setPersonalDraft({
-            first_name: found.first_name || '',
-            last_name: found.last_name || '',
-            email: found.email || '',
-            phone: found.phone || '',
-            descp: found.descp || ''
-          })
-          setAddressDraft({
-            country: found.country || '',
-            state: found.state || '',
-            city: found.city || '',
-            pin: found.pin || '',
-            address: found.address || ''
-          })
-          setMedicalDraft({
-            licence: found.licence || '',
-            hospital_name: found.hospital_name || '',
-            profession_type: found.profession_type || '',
-            specialization: found.specialization || ''
-          })
-          setEducationDraft(found.education || [])
-          setSocialDraft({
-            website: found['social-links']?.website || '',
-            linkedin: found['social-links']?.linkedin || '',
-            facebook: found['social-links']?.facebook || '',
-            instagram: found['social-links']?.instagram || ''
-          })
-          setUserDraft({
-            name: found.name || '',
-            profession_type: found.profession_type || '',
-            experience: found.experience || ''
-          })
-          // Set Clerk image as profile image
-          setUser({ ...found, imageUrl: clerkUser?.imageUrl })
-        }
+    if (reduuxUserDetails.userId) {
+      const userData = {
+        id: reduuxUserDetails.userId,
+        name: reduuxUserDetails.firstName + ' ' + reduuxUserDetails.lastName,
+        first_name: reduuxUserDetails.firstName,
+        last_name: reduuxUserDetails.lastName,
+        email: reduuxUserDetails.email,
+        phone: reduuxUserDetails.phone,
+        descp: reduuxUserDetails.bio,
+        country: reduuxUserDetails.country,
+        state: reduuxUserDetails.state,
+        city: reduuxUserDetails.city,
+        pin: reduuxUserDetails.zip,
+        address: reduuxUserDetails.address,
+        licence: reduuxUserDetails.license,
+        hospital_name: '', // Not in Redux, set empty
+        profession_type: reduuxUserDetails.role,
+        specialization: '', // Not in Redux, set empty
+        education: reduuxUserDetails.education ? [reduuxUserDetails.education] : [],
+        awards: reduuxUserDetails.awards ? [reduuxUserDetails.awards] : [],
+        'social-links': {
+          website: reduuxUserDetails.website,
+          linkedin: reduuxUserDetails.linkedIn,
+          facebook: reduuxUserDetails.facebook,
+          instagram: reduuxUserDetails.instagram
+        },
+        experience: reduuxUserDetails.exp,
+        hospitals: [], // Not in Redux, set empty
+        imageUrl: clerkUser?.imageUrl
+      }
+      setUser(userData)
+      setPersonalDraft({
+        first_name: userData.first_name || '',
+        last_name: userData.last_name || '',
+        email: userData.email || '',
+        phone: userData.phone || '',
+        descp: userData.descp || ''
       })
-  }, [params.id])
+      setAddressDraft({
+        country: userData.country || '',
+        state: userData.state || '',
+        city: userData.city || '',
+        pin: userData.pin || '',
+        address: userData.address || ''
+      })
+      setMedicalDraft({
+        licence: userData.licence || '',
+        hospital_name: userData.hospital_name || '',
+        profession_type: userData.profession_type || '',
+        specialization: userData.specialization || ''
+      })
+      setEducationDraft(userData.education || [])
+      setSocialDraft({
+        website: userData['social-links']?.website || '',
+        linkedin: userData['social-links']?.linkedin || '',
+        facebook: userData['social-links']?.facebook || '',
+        instagram: userData['social-links']?.instagram || ''
+      })
+      setUserDraft({
+        name: userData.name || '',
+        profession_type: userData.profession_type || '',
+        experience: userData.experience || ''
+      })
+    }
+  }, [reduuxUserDetails, clerkUser])
 
   if (!user) {
     return <div>User not found</div>
@@ -278,7 +301,7 @@ export default function Profile() {
   // Handler for selecting a hospital
   const handleHospitalSelect = (hospitalId: string) => {
     localStorage.setItem('hospital', hospitalId)
-    dispatch(setHospitalId(hospitalId))
+    // dispatch(setHospitalId(hospitalId))
   }
 
   return (
@@ -318,7 +341,7 @@ export default function Profile() {
         </div>
       </div>
       {activeTab === 'Account' && (
-        <div className='overflow-y-auto max-h-[calc(100vh-260px)]'>
+        <div className='overflow-y-auto max-h-[calc(100vh-200px)]'>
           {/* user block */}
           <div className="bg-white p-6 rounded-lg ring-1 ring-stone-700/20 flex flex-row mb-5">
             <div className='grow flex flex-row gap-6'>

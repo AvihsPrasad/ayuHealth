@@ -1,12 +1,15 @@
 "use client"
+import { useFetch } from '@/lib/fetch';
+import { RootState } from '@/redux/store';
 import { Dialog, DialogBackdrop, DialogPanel, DialogTitle, Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react'
 import { AdjustmentsVerticalIcon, BeakerIcon, ChevronDownIcon, ExclamationTriangleIcon, InformationCircleIcon, MagnifyingGlassCircleIcon, PlusIcon, TicketIcon, XMarkIcon } from '@heroicons/react/20/solid'
 import React, { useState, useEffect, useMemo } from 'react'
+import { useSelector } from 'react-redux';
 
 interface AppointmentType {
   id: string;
   token_no: string;
-  patient_name: string;
+  firstName: string;
   age: number;
   aadhar: string;
   date: string;
@@ -57,7 +60,7 @@ function AddAppointmentModal({ open, setOpen, onAddAppointment, appointments, do
 
     const newAppointment: Omit<AppointmentType, 'id'> = {
       token_no: `T${(appointments.length + 1).toString().padStart(3, '0')}`,
-      patient_name: formData.patientName,
+      firstName: formData.patientName,
       age: Math.floor(Math.random() * 50) + 20, // Random age between 20-70
       aadhar: Math.random().toString().slice(2, 17), // Random 15 digit aadhar
       date: formData.appointmentDate,
@@ -227,7 +230,7 @@ function PatientLists({ appointments, doctors }: { appointments: AppointmentType
               <div>{appointment.token_no}</div>
             </div>
             <div className='grow flex flex-row justify-around items-center gap-2'>
-              <div className="text-lg font-medium flex-1 text-nowrap">{appointment.patient_name}</div>
+              <div className="text-lg font-medium flex-1 text-nowrap">{appointment.firstName}</div>
               {/* <div className="text-sm text-gray-500">{appointment.age} years</div> */}
               <div className="text-sm text-gray-500 flex-2">{getDoctorName(appointment.doctor_id)}</div>
             </div>
@@ -304,7 +307,13 @@ function Appointment() {
   const [appointments, setAppointments] = useState<AppointmentType[]>([])
   const [doctors, setDoctors] = useState<Doctor[]>([])
   const [searchQuery, setSearchQuery] = useState('')
-  const [selectedDateFilter, setSelectedDateFilter] = useState('all')
+  const [selectedDateFilter, setSelectedDateFilter] = useState('all');
+
+  const reduuxUserDetails = useSelector((state: RootState) => state.user)
+  
+  const { data: appontmentdbData, loading, error } = useFetch<any[]>(`/api/getappointments?doctor_id=${reduuxUserDetails.userdbId}&hospital_id=1`);
+
+  console.log('Appointment DB Data:', appontmentdbData);
 
   useEffect(() => {
     fetch('/json/appointment.json')
@@ -336,7 +345,7 @@ function Appointment() {
     const tomorrow = new Date(Date.now() + 86400000).toISOString().split('T')[0];
 
     let filtered = appointments.filter(appointment => {
-      const matchesSearch = appointment.patient_name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      const matchesSearch = appointment.firstName.toLowerCase().includes(searchQuery.toLowerCase()) ||
         appointment.token_no.toLowerCase().includes(searchQuery.toLowerCase());
       const matchesDate = selectedDateFilter === 'all' ||
         (selectedDateFilter === 'today' && appointment.date === today) ||
@@ -347,7 +356,7 @@ function Appointment() {
       if (a.token_no !== b.token_no) {
         return a.token_no.localeCompare(b.token_no);
       }
-      return a.patient_name.localeCompare(b.patient_name);
+      return a.firstName.localeCompare(b.firstName);
     });
     return filtered;
   }, [appointments, searchQuery, selectedDateFilter]);

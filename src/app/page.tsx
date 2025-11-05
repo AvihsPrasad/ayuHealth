@@ -13,7 +13,7 @@ import Message from "@/components/Message";
 export default function Login() {
   const router = useRouter();
   const dispatch = useDispatch();
-  const { sessionId } = useAuth();
+  const { isLoaded: authLoad, userId, sessionId } = useAuth();
   // const [emailVerify, setEmailVerify] = useState('agustya742@gmail.com');
   // const [verifyPassword, setVerifyPassword] = useState('password123');
   // const [verifyCode, setVerifyCode] = useState('password123');
@@ -34,18 +34,19 @@ export default function Login() {
   // const [successfulCreation, setSuccessfullCreation] = useState(false)
   // const [forgotPassword, setForgotPassword] = useState(false)
 
-  // const { data: categoriesDb, loading, error } = useFetch<any[]>("/api/getData");
-  // console.log(categoriesDb);
 
   useEffect(() => {
+    // console.log(sessionId)
+    // console.log(userId)
+    // console.log(sessionId)
     // fetch('/json/profile.json')
     //   .then(res => res.json())
     //   .then(data => setProfiles(data));
 
-    if (sessionId) {
+     if (authLoad && userId) {
       router.push("/dashboard");
     }
-  }, []);
+  }, [authLoad, userId, router]);
 
 
   function handleSignUpFieldChange(e: any) {

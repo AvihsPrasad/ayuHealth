@@ -9,8 +9,9 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useUser } from "@clerk/nextjs";
 import { useDispatch, useSelector } from 'react-redux';
-import { setUserId, setUserName, setHospitalId, setRole } from '../../redux/userSlice';
+import { setDbReduxUser } from '../../redux/userSlice';
 import { RootState } from "@/redux/store";
+import { useFetch } from "@/lib/fetch";
 
 export default function Home() {
   const { user } = useUser();
@@ -23,32 +24,65 @@ export default function Home() {
   const [open, setOpen] = useState(true);
 
   const userId = useSelector((state: RootState) => state.user.userId)
+  const userDetails = useSelector((state: RootState) => state.user)
+
+  const { data: categoriesDb, loading, error } = useFetch<any[]>(`/api/getDoctorData?id=${userId}`);
+  const { data: hospitalDbList, loading: hospitalLoading, error: hospitalError } = useFetch<any[]>(`/api/getHospitals?id=${categoriesDb?.[0]?.id || userDetails.userdbId}`);
+  // console.log(userId);
+  // console.log('categoriesDb');
+  // console.log(hospitalDbList);
+  console.log(user && categoriesDb && categoriesDb.length > 0);
   
 
   useEffect(() => {
-    if (user) {
-      console.log(user.id)
-      dispatch(setUserId(user.id));
-      dispatch(setUserName(user.username + ''));
-      // Assuming hospitalId and role are stored in user metadata or need to be fetched
-      // dispatch(setHospitalId(user.publicMetadata.hospitalId || ''));
-      // dispatch(setRole(user.publicMetadata.role || ''));
+    if (user && categoriesDb && categoriesDb.length > 0 && hospitalDbList && hospitalDbList.length > 0) {
+      const userData = categoriesDb[0];
+      console.log(hospitalDbList[0].id);
+      dispatch(setDbReduxUser({
+        userId: user.id,
+        userdbId: userData.id.toString(),
+        userName: user.username || '',
+        firstName: userData.first_name || '',
+        lastName: userData.last_name || '',
+        email: userData.email || '',
+        phone: userData.phone || '',
+        license: userData.licence || '',
+        bio: '',
+        exp: '',
+        education: '',
+        awards: '',
+        website: '',
+        linkedIn: '',
+        facebook: '',
+        instagram: '',
+        address: userData.address || '',
+        country: userData.country || '',
+        state: userData.state || '',
+        city: userData.city || '',
+        zip: userData.zip || '',
+        active_hospital: hospitalDbList[0].id,
+        hospitalId: hospitalDbList ? hospitalDbList : [],
+        role: 'admin',
+        isCollapsed: false
+      }));
     }
-    fetch('/json/profile.json')
-      .then(res => res.json())
-      .then(data => setProfiles(data));
-    fetch('/json/staff.json')
-      .then(res => res.json())
-      .then(data => {
-        console.log(userId)
-        // console.log(data)
-        const matchingStaff = data.filter((s: any) => s.docId === userId);
-        // console.log(matchingStaff)
-        setStaff(matchingStaff)
-      });
+    // fetch('/json/profile.json')
+    //   .then(res => res.json())
+    //   .then(data => setProfiles(data));
+    // fetch('/json/staff.json')
+    //   .then(res => res.json())
+    //   .then(data => {
+    //     // console.log(userId)
+    //     // console.log(data)
+    //     const matchingStaff = data.filter((s: any) => s.docId === userId);
+    //     // console.log(matchingStaff)
+    //     setStaff(matchingStaff)
+    //   });
 
     // Update Redux with user details from Clerk
-  }, [user, dispatch]);
+  }, [user, categoriesDb, hospitalDbList, dispatch]);
+
+  console.log(userDetails)
 
   const toggleAccordion = (index: number) => {
     setOpenIndex(openIndex === index ? null : index);
@@ -105,7 +139,7 @@ export default function Home() {
                 <ChevronDownIcon className={`size-5 transition-transform duration-200 ${open ? 'rotate-180' : ''}`} />
               </button>
             </div>
-            <div className={`bg-white ring-1.5 ring-gray-300 p-4 rounded-b-lg transition-all duration-500 ease-in-out ${open ? 'opacity-100 max-h-96' : 'opacity-0 max-h-0 overflow-hidden'}`}>
+            <div className={`bg-white ring-1.5 ring-gray-300 p-4 overflow-y-auto rounded-b-lg transition-all duration-500 ease-in-out ${open ? 'opacity-100 max-h-96' : 'opacity-0 max-h-0 overflow-hidden'}`}>
               {staff.length > 0 ? (
                 staff.map((s, index) => (
                   <div key={s.id} className={`flex flex-row gap-4 pb-3 mb-3 ${index < staff.length - 1 ? 'border-b-1 border-gray-200' : ''}`}>
