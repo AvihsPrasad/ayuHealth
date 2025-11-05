@@ -94,10 +94,10 @@ function AddAppointmentModal({ open, setOpen, onAddAppointment, appointments, do
           >
             <div className=" px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
               <div className="flex sm:items-start flex-row gap-4">
-                <div className="mx-auto flex size-12 shrink-0 items-center justify-center rounded-full bg-blue-400/20 sm:mx-0 sm:size-10">
+                {/* <div className="mx-auto flex size-12 shrink-0 items-center justify-center rounded-full bg-blue-400/20 sm:mx-0 sm:size-10">
                   <InformationCircleIcon aria-hidden="true" className="size-6 text-blue-500" />
-                </div>
-                <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left grow">
+                </div> */}
+                <div className="mt-3 text-center sm:mt-0 sm:text-left grow">
                   <DialogTitle as="h3" className="text-base font-semibold text-gray-900 mb-8">
                     Add New Appointment
                   </DialogTitle>
@@ -232,7 +232,7 @@ function PatientLists({ appointments, doctors }: { appointments: AppointmentType
             <div className='grow flex flex-row justify-around items-center gap-2'>
               <div className="text-lg font-medium flex-1 text-nowrap">{appointment.firstName}</div>
               {/* <div className="text-sm text-gray-500">{appointment.age} years</div> */}
-              <div className="text-sm text-gray-500 flex-2">{getDoctorName(appointment.doctor_id)}</div>
+              {/* <div className="text-sm text-gray-500 flex-2">{getDoctorName(appointment.doctor_id)}</div> */}
             </div>
             <div className=' flex items-center'>
               <span className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ${appointment.status === 'pending' ? 'bg-yellow-400/10 text-yellow-400 inset-ring inset-ring-yellow-400/20' :
@@ -311,29 +311,32 @@ function Appointment() {
 
   const reduuxUserDetails = useSelector((state: RootState) => state.user)
   
-  const { data: appontmentdbData, loading, error } = useFetch<any[]>(`/api/getappointments?doctor_id=${reduuxUserDetails.userdbId}&hospital_id=1`);
+  const { data: appontmentdbData, loading, error } = useFetch<any[]>(`/api/getappointments?doctor_id=${reduuxUserDetails.userdbId}&hospital_id=${reduuxUserDetails.active_hospital.id}`);
 
   console.log('Appointment DB Data:', appontmentdbData);
 
   useEffect(() => {
-    fetch('/json/appointment.json')
-      .then(response => response.json())
-      .then(data => setAppointments(data))
-      .catch(error => console.error('Error fetching appointments:', error))
-  }, [])
+    if (appontmentdbData && appontmentdbData.length > 0) {
+      setAppointments(appontmentdbData);
+    }
+    // fetch('/json/appointment.json')
+    //   .then(response => response.json())
+    //   .then(data => setAppointments(data))
+    //   .catch(error => console.error('Error fetching appointments:', error))
+  }, [appontmentdbData])
 
-  useEffect(() => {
-    fetch('/json/profile.json')
-      .then(response => response.json())
-      .then(data => {
-        const doctorList = data.map((doc: any) => ({
-          id: doc.id,
-          name: doc.name
-        }));
-        setDoctors(doctorList);
-      })
-      .catch(error => console.error('Error fetching doctors:', error))
-  }, [])
+  // useEffect(() => {
+  //   fetch('/json/profile.json')
+  //     .then(response => response.json())
+  //     .then(data => {
+  //       const doctorList = data.map((doc: any) => ({
+  //         id: doc.id,
+  //         name: doc.name
+  //       }));
+  //       setDoctors(doctorList);
+  //     })
+  //     .catch(error => console.error('Error fetching doctors:', error))
+  // }, [])
 
   const handleAddAppointment = (newAppointment: Omit<AppointmentType, 'id'>) => {
     const id = (appointments.length + 1).toString();
@@ -345,16 +348,18 @@ function Appointment() {
     const tomorrow = new Date(Date.now() + 86400000).toISOString().split('T')[0];
 
     let filtered = appointments.filter(appointment => {
-      const matchesSearch = appointment.firstName.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        appointment.token_no.toLowerCase().includes(searchQuery.toLowerCase());
+      const matchesSearch = appointment?.firstName?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        appointment?.token_no?.toString().toLowerCase().includes(searchQuery.toLowerCase());
       const matchesDate = selectedDateFilter === 'all' ||
         (selectedDateFilter === 'today' && appointment.date === today) ||
         (selectedDateFilter === 'tomorrow' && appointment.date === tomorrow);
       return matchesSearch && matchesDate;
     });
     filtered.sort((a, b) => {
-      if (a.token_no !== b.token_no) {
-        return a.token_no.localeCompare(b.token_no);
+      const aToken = 'T00' + a.token_no;
+      const bToken = 'T00' + a.token_no;
+      if (aToken !== bToken) {
+        return aToken.localeCompare(bToken);
       }
       return a.firstName.localeCompare(b.firstName);
     });

@@ -6,7 +6,8 @@ import React, { useState, useEffect, useMemo } from 'react'
 
 interface PatientType {
   id: string;
-  name: string;
+  firstName: string;
+  lastName: string;
   aadhar: string;
   phone: string;
   email: string;
@@ -42,10 +43,11 @@ export default function Patients() {
 
   const filteredPatients = useMemo(() => {
     let filtered = patients.filter(patient =>
-      patient.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      patient.id.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      patient.phone.includes(searchQuery) ||
-      patient.aadhar.includes(searchQuery)
+      patient?.firstName?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      patient?.lastName?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      patient?.id?.toString().toLowerCase().includes(searchQuery.toLowerCase()) ||
+      patient?.phone?.includes(searchQuery) ||
+      patient?.aadhar?.includes(searchQuery)
     );
     if (sortBy === 'aadhar') {
       filtered = filtered.sort((a, b) => a.aadhar.localeCompare(b.aadhar))
@@ -95,7 +97,7 @@ export default function Patients() {
                 <div className="bg-gray-300 w-16 h-16 rounded-full"></div>
               </div>
               <div>
-                <div className="text-base font-medium">{patient.name}</div>
+                <div className="text-base font-medium">{patient.firstName} {patient.lastName}</div>
                 {/* <div className="text-sm font-medium text-gray-500">{patient.id}</div> */}
                 <div className="text-sm font-medium text-gray-500">{patient.aadhar}</div>
               </div>

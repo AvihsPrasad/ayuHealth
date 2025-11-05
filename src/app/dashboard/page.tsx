@@ -28,6 +28,7 @@ export default function Home() {
 
   const { data: categoriesDb, loading, error } = useFetch<any[]>(`/api/getDoctorData?id=${userId}`);
   const { data: hospitalDbList, loading: hospitalLoading, error: hospitalError } = useFetch<any[]>(`/api/getHospitals?id=${categoriesDb?.[0]?.id || userDetails.userdbId}`);
+  // const { data: staffDBdata, loading: staffLoading, error: staffError } = useFetch<any[]>(`/api/getstaff?hospital_id=${userRedux.active_hospital.id}`);
   // console.log(userId);
   // console.log('categoriesDb');
   // console.log(hospitalDbList);
@@ -60,7 +61,7 @@ export default function Home() {
         state: userData.state || '',
         city: userData.city || '',
         zip: userData.zip || '',
-        active_hospital: hospitalDbList[0].id,
+        active_hospital: {id: hospitalDbList[1].id, name: hospitalDbList[1].name},
         hospitalId: hospitalDbList ? hospitalDbList : [],
         role: 'admin',
         isCollapsed: false

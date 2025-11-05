@@ -16,10 +16,10 @@ interface StaffType {
 }
 
 export default function Staff() {
-  const userId = useSelector((state: RootState) => state.user.userId)
+  const userRedux = useSelector((state: RootState) => state.user)
   const [staff, setStaff] = useState<StaffType[]>([])
   const [searchQuery, setSearchQuery] = useState('');
-  const { data: staffDBdata, loading, error } = useFetch<any[]>(`/api/getstaff?hospital_id=1`);
+  const { data: staffDBdata, loading, error } = useFetch<any[]>(`/api/getstaff?hospital_id=${userRedux.active_hospital.id}`);
   console.log('staffDBdata', staffDBdata);
 
   useEffect(() => {

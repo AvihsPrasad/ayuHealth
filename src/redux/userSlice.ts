@@ -23,7 +23,7 @@ interface UserState {
   city: string
   zip: string
   hospitalId: any[]
-  active_hospital: string
+  active_hospital: { id: string; name: string }
   role: string
   isCollapsed: boolean
 }
@@ -51,7 +51,7 @@ const initialState: UserState = {
   city: '',
   zip: '',
   hospitalId: [],
-  active_hospital: '',
+  active_hospital: { id: '', name: '' },
   role: 'admin',
   isCollapsed: false
 }
@@ -123,7 +123,7 @@ const userSlice = createSlice({
     setHospitalId: (state, action: PayloadAction<any[]>) => {
       state.hospitalId = action.payload
     },
-    setActiveHospital: (state, action: PayloadAction<string>) => {
+    setActiveHospital: (state, action: PayloadAction<{ id: string; name: string }>) => {
       state.active_hospital = action.payload
     },
     setRole: (state, action: PayloadAction<string>) => {
@@ -152,7 +152,7 @@ const userSlice = createSlice({
       state.city = action.payload.city
       state.zip = action.payload.zip
       state.hospitalId = action.payload.hospitalId
-      state.active_hospital = action.payload.active_hospital || ''
+      state.active_hospital = action.payload.active_hospital || { id: '', name: '' }
       state.role = action.payload.role
       state.isCollapsed = action.payload.isCollapsed
     },

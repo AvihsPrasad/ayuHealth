@@ -11,7 +11,7 @@ export async function GET(request: Request) {
     }
     try {
         const sql = neon(`${process.env.NEON_DB_URL}`);
-        const response = await sql`SELECT * FROM users WHERE hospital_id = ${hospitalId}`;
+        const response = await sql`SELECT * FROM staff WHERE hospitals_id = ${hospitalId}`;
 
         return Response.json({ data: response });
     } catch (error) {

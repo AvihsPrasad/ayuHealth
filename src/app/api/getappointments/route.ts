@@ -12,7 +12,7 @@ export async function GET(request: Request) {
     }
     try {
         const sql = neon(`${process.env.NEON_DB_URL}`);
-        const response = await sql`SELECT a.*, p.name as patient_full_name, p.phone, p.email, p.gender, p.dob, p.address FROM appointments a JOIN patients p ON a.patient_aadhar = p.aadhar WHERE a.doctor_id = ${doctorId} AND a.hospital_id = ${hospitalId}`;
+        const response = await sql`SELECT a.*, p.* FROM appointments a JOIN patient p ON a.patient_id = p.id WHERE  a.doctor_id = ${doctorId} AND a.hospital_id = ${hospitalId}`;
 
         return Response.json({ data: response });
     } catch (error) {

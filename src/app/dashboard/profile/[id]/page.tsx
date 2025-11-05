@@ -7,7 +7,7 @@ import Subscription from '@/components/subscription'
 import { HeartIcon } from '@heroicons/react/20/solid'
 import { useSelector, useDispatch } from 'react-redux'
 import { RootState } from '../../../../redux/store'
-import { setHospitalId } from '../../../../redux/userSlice'
+import { setActiveHospital, setHospitalId } from '../../../../redux/userSlice'
 import { useUser } from '@clerk/nextjs'
 import NotificationBar from '@/components/notificationBar'
 
@@ -18,7 +18,7 @@ export default function Profile() {
   const searchParams = useSearchParams()
   const dispatch = useDispatch()
   const reduuxUserDetails = useSelector((state: RootState) => state.user)
-  const currentHospitalId = useSelector((state: RootState) => state.user.hospitalId)
+  const currentHospitalId = useSelector((state: RootState) => state.user.active_hospital.id)
   const [profiles, setProfiles] = useState<any[]>([])
   const [user, setUser] = useState<any>(null)
   const [activeTab, setActiveTab] = useState('Account')
@@ -299,9 +299,9 @@ export default function Profile() {
   }
 
   // Handler for selecting a hospital
-  const handleHospitalSelect = (hospitalId: string) => {
-    localStorage.setItem('hospital', hospitalId)
-    // dispatch(setHospitalId(hospitalId))
+  const handleHospitalSelect = (hospitalId: any) => {
+    // localStorage.setItem('hospital', hospitalId)
+    dispatch(setActiveHospital({id: hospitalId.id , name: hospitalId.name}))
   }
 
   return (
@@ -813,12 +813,12 @@ export default function Profile() {
         <div className="bg-white p-6 rounded-lg ring-1 ring-stone-700/20">
           <h2 className="text-lg font-semibold mb-4">Hospitals associated with</h2>
           <div className="grid grid-cols-2 gap-4">
-            {user.hospitals && user.hospitals.length > 0 ? (
-              user.hospitals.map((hospital: any, idx: number) => (
+            {reduuxUserDetails.hospitalId && reduuxUserDetails.hospitalId.length > 0 ? (
+              reduuxUserDetails.hospitalId.map((hospital: any, idx: number) => (
                 <div
                   key={idx}
                   className={`flex flex-col items-center justify-center gap-8 p-10 border rounded cursor-pointer ${hospital.id === currentHospitalId ? 'border-2 border-dashed border-red-500 bg-red-50' : 'border-gray-300'}`}
-                  onClick={() => handleHospitalSelect(hospital.id)}
+                  onClick={() => handleHospitalSelect(hospital)}
                 >
                   <p className={`rounded-full flex items-center justify-center${hospital.id === currentHospitalId ? 'text-red-500 ' : 'text-gray-500 '}`}>
                     <PhotoIcon className={`size-10 ${hospital.id === currentHospitalId ? 'text-red-500 ' : 'text-gray-500 '}`} />

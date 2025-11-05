@@ -8,7 +8,6 @@ import React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { RootState } from '../redux/store'
 import { useClerk, useUser } from '@clerk/nextjs';
-import { persistor } from '../redux/store';
 
 function LeftBlockNav() {
     const { signOut } = useClerk();
@@ -18,24 +17,26 @@ function LeftBlockNav() {
     const hospitalId = useSelector((state: RootState) => state.user.hospitalId)
     const [hospitalName, setHospitalName] = React.useState('')
 
-    React.useEffect(() => {
-        fetch('/json/profile.json')
-            .then(res => res.json())
-            .then(data => {
-                const user = data.find((profile: any) => profile.id === userId)
-                if (user) {
-                    const hospital = user.hospitals.find((h: any) => h.id === hospitalId)
-                    if (hospital) {
-                        setHospitalName(hospital.name)
-                    }
-                }
-            })
-    }, [userId, hospitalId])
+    const reduuxUserDetails = useSelector((state: RootState) => state.user)
+
+    // React.useEffect(() => {
+    //     fetch('/json/profile.json')
+    //         .then(res => res.json())
+    //         .then(data => {
+    //             const user = data.find((profile: any) => profile.id === userId)
+    //             if (user) {
+    //                 const hospital = user.hospitals.find((h: any) => h.id === hospitalId)
+    //                 if (hospital) {
+    //                     setHospitalName(hospital.name)
+    //                 }
+    //             }
+    //         })
+    // }, [userId, hospitalId])
     return (
         <div className='flex flex-row h-16 items-center px-6 bg-white after:pointer-events-none after:absolute after:inset-x-0 after:bottom-0 after:h-px after:bg-white/10 border-b-[1px] border-gray-300 z-10'>
 
             <div className='grow'>
-                <p>{hospitalName || 'Hospital Name'}</p>
+                <p className='text-violet-800 font-bold'>{reduuxUserDetails.active_hospital.name || 'Hospital Name'}</p>
                 {/* <span className='relative'>
                     <div className='absolute left-3 top-2 pointer-events-none'>
                         <MagnifyingGlassCircleIcon className='size-5 text-gray-400' />
