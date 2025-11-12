@@ -73,7 +73,7 @@ export default function Home() {
         active_hospital: {id: '', name: ''},
         hospitalId: hospitalDbList ? hospitalDbList : [],
         role: 'admin',
-        isCollapsed: false
+        isCollapsed: userDetails.isCollapsed
       }));
     }
 
