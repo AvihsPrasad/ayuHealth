@@ -4,14 +4,13 @@ import { CameraIcon, InboxIcon, PencilSquareIcon, XCircleIcon, ArrowPathIcon } f
 import { useUser } from '@clerk/nextjs'
 
 interface AccountTabProps {
-  reduuxUserDetails: any 
   user: any
   setUser: (user: any) => void
   notifications: Array<{ id: string; message: string; type: 'success' | 'error' | 'info' | 'warning' }>
   setNotifications: (notifications: any) => void
 }
 
-export default function AccountTab({ user, setUser, notifications, setNotifications,reduuxUserDetails}: AccountTabProps) {
+export default function AccountTab({ user, setUser, notifications, setNotifications }: AccountTabProps) {
   const { user: clerkUser } = useUser();
 
   // Edit states for each block
@@ -61,9 +60,9 @@ export default function AccountTab({ user, setUser, notifications, setNotificati
   React.useEffect(() => {
     if (user) {
       setPersonalDraft({
-        first_name: reduuxUserDetails.first_name || '',
-        last_name: reduuxUserDetails.last_name || '',
-        email: reduuxUserDetails.email || '',
+        first_name: user.first_name || '',
+        last_name: user.last_name || '',
+        email: user.email || '',
         phone: user.phone || '',
         descp: user.descp || ''
       })

@@ -1,21 +1,25 @@
 "use client"
-import { useFetch } from '@/lib/fetch';
+import { fetchAPI, useFetch } from '@/lib/fetch';
 import { RootState } from '@/redux/store';
 import { Dialog, DialogBackdrop, DialogPanel, DialogTitle, Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react'
 import { AdjustmentsVerticalIcon, BeakerIcon, ChevronDownIcon, ExclamationTriangleIcon, InformationCircleIcon, MagnifyingGlassCircleIcon, PlusIcon, TicketIcon, XMarkIcon } from '@heroicons/react/20/solid'
 import React, { useState, useEffect, useMemo } from 'react'
 import { useSelector } from 'react-redux';
+import { scheduler } from 'timers/promises';
+import NotificationBar from '@/components/notificationBar';
 
 interface AppointmentType {
   id: string;
   token_no: string;
   firstName: string;
-  age: number;
+  age: string;
   aadhar: string;
+  pat_id: string;
   date: string;
   time: string;
   doctor_id: string;
   status: string;
+  type: string;
 }
 
 interface Doctor {
@@ -26,14 +30,40 @@ interface Doctor {
 function AddAppointmentModal({ open, setOpen, onAddAppointment, appointments, doctors }: { open: boolean; setOpen: (open: boolean) => void; onAddAppointment: (appointment: Omit<AppointmentType, 'id'>) => void; appointments: AppointmentType[]; doctors: Doctor[] }) {
   const [formData, setFormData] = useState({
     patientName: '',
+    pat_id: '',
+    aadharNo: '',
     doctor: '',
+    age: '',
     appointmentDate: '',
     appointmentType: '',
-    notes: ''
+    notes: '',
+    patientSuggestions: [] as any[]
   });
+  const [showDropdown, setShowDropdown] = useState(false);
+  const [searchedList, setSearchedList] = useState([]);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+
+  const handleChange = async (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+
+    if (name === 'patientName' && value.length > 2) {
+      try {
+        const response = await fetch(`/api/getpatientId?aadhar=${value}`);
+        // const {data: patData} = await useFetch<any[]>(`/api/getpatientId?aadhar=${value}`)
+        setShowDropdown(true);
+        const data = await response.json();
+        setSearchedList(data.data || []);
+        console.log('Fetching data:', data);
+        // console.log('Fetching patient suggestions for:', patData);
+        setFormData(prev => ({ ...prev, patientSuggestions: data.data || [] }));
+      } catch (error) {
+        console.error('Error fetching patient suggestions:', error);
+        setFormData(prev => ({ ...prev, patientSuggestions: [] }));
+      }
+    } else if (name === 'patientName' && value.length <= 2) {
+      setFormData(prev => ({ ...prev, patientSuggestions: [] }));
+    }
   };
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -61,20 +91,26 @@ function AddAppointmentModal({ open, setOpen, onAddAppointment, appointments, do
     const newAppointment: Omit<AppointmentType, 'id'> = {
       token_no: `T${(appointments.length + 1).toString().padStart(3, '0')}`,
       firstName: formData.patientName,
-      age: Math.floor(Math.random() * 50) + 20, // Random age between 20-70
-      aadhar: Math.random().toString().slice(2, 17), // Random 15 digit aadhar
+      age: formData.age, // Random age between 20-70
+      pat_id: formData.pat_id, // Random 15 digit aadhar
+      aadhar: formData.aadharNo, // Random 15 digit aadhar
       date: formData.appointmentDate,
       time: nextTime,
       doctor_id: doctorId,
-      status: 'pending'
+      status: 'pending',
+      type: formData.appointmentType || 'consultation',
     };
     onAddAppointment(newAppointment);
     setFormData({
       patientName: '',
+      aadharNo: '',
+      age: '',
+      pat_id: '',
       doctor: '',
       appointmentDate: '',
       appointmentType: '',
-      notes: ''
+      notes: '',
+      patientSuggestions: []
     });
     setOpen(false);
   };
@@ -102,20 +138,70 @@ function AddAppointmentModal({ open, setOpen, onAddAppointment, appointments, do
                     Add New Appointment
                   </DialogTitle>
                   <form onSubmit={handleSubmit} className="space-y-4 w-full">
-                    <div>
+                    <div className="relative">
                       <label htmlFor="patientName" className="block text-sm font-medium text-gray-700">
                         Patient Name
                       </label>
-                      <input
-                        type="text"
-                        id="patientName"
-                        name="patientName"
+                      <div className="relative w-full">
+                        <input
+                          type="text"
+                          id="patientName"
+                          name="patientName"
                         value={formData.patientName}
                         onChange={handleChange}
-                        required
-                        className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
-                        placeholder="Enter patient name"
-                      />
+                          placeholder="Enter patient name or Aadhar"
+                          className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
+                        />
+
+                        {showDropdown && searchedList.length > 0 && (
+                          <ul className="absolute z-10 w-full bg-white border border-gray-200 rounded-lg mt-1 shadow-lg max-h-60 overflow-y-auto">
+                            {searchedList.map((item: any, index) => (
+                              <li
+                                key={index}
+                                // onClick={() => setFormData({ ...formData, patientName: item.id })}
+                                onClick={() => {
+                                setFormData(prev => ({
+                                  ...prev,
+                                  patientName: item.firstName + ' ' + item.lastName,
+                                  aadharNo: item.aadhar,
+                                  age: item.age,
+                                  pat_id: item.id,
+                                  patientSuggestions: []
+                                }));
+                                setShowDropdown(false);
+                                setSearchedList([]);
+                              }}
+                                className="px-4 py-2 cursor-pointer hover:bg-gray-500 hover:text-white border-b border-gray-200"
+                              >
+                                <div className='text-base'>{item.firstName} {item.lastName}</div>
+                                <div className='text-sm text-gray-400'>{item.aadhar}</div>
+                              </li>
+                            ))}
+                          </ul>
+                        )}
+                      </div>
+                      {/* {formData.patientSuggestions.length > 0 && (
+                        <ul className="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
+                          {formData.patientSuggestions.map((patient, index) => (
+                            <li
+                              key={index}
+                              className="relative cursor-pointer select-none py-2 pl-3 pr-9 text-gray-900 hover:bg-indigo-600 hover:text-white"
+                              onClick={() => {
+                                setFormData(prev => ({
+                                  ...prev,
+                                  patientName: patient.name,
+                                  patientSuggestions: []
+                                }));
+                              }}
+                            >
+                              <div className="flex">
+                                <span className="truncate font-normal">{patient.name}</span>
+                                <span className="ml-2 truncate text-gray-500">{patient.aadhar}</span>
+                              </div>
+                            </li>
+                          ))}
+                        </ul>
+                      )} */}
                     </div>
 
                     <div>
@@ -125,7 +211,7 @@ function AddAppointmentModal({ open, setOpen, onAddAppointment, appointments, do
                       <select
                         id="doctor"
                         name="doctor"
-                        value={formData.doctor}
+                        value={formData.doctor || ''}
                         onChange={handleChange}
                         required
                         className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
@@ -222,8 +308,8 @@ function PatientLists({ appointments, doctors }: { appointments: AppointmentType
 
   return (
     <div className="overflow-auto h-[calc(100vh-210px)]">
-      {appointments.map((appointment) => (
-        <div key={appointment.id} className="bg-white cursor-pointer p-4 rounded-lg border-[1.5px] border-gray-300 mb-2 hover:shadow-md transition-shadow">
+      {appointments.map((appointment,index) => (
+        <div key={index} className="bg-white cursor-pointer p-4 rounded-lg border-[1.5px] border-gray-300 mb-2 hover:shadow-md transition-shadow">
           <div className='flex flex-row gap-4'>
             <div className="text-sm text-blue-600 bg-blue-50 p-1 px-3 border-[1px] border-blue-400 rounded-md flex flex-row gap-2 justify-center items-center w-fit">
               <div><TicketIcon className='size-4' /></div>
@@ -239,7 +325,7 @@ function PatientLists({ appointments, doctors }: { appointments: AppointmentType
                 appointment.status === 'completed' ? 'bg-green-400/10 text-green-400 inset-ring inset-ring-green-400/20' :
                   appointment.status === 'cancelled' ? 'bg-red-400/10 text-red-400 inset-ring inset-ring-red-400/20' :
                     'bg-gray-100 text-gray-800'
-                }` }>{appointment.status}</span>
+                }`}>{appointment.status}</span>
             </div>
             <div className="text-right flex items-center">
               <p className="text-sm text-gray-500">{appointment.date} {appointment.time}</p>
@@ -263,7 +349,7 @@ function DateFilter({ selectedDateFilter, setSelectedDateFilter }: { selectedDat
   return (
     <Menu as="div" className="relative inline-block">
       <MenuButton className="inline-flex w-full justify-center gap-x-2 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-800 cursor-pointer inset-ring-1 inset-ring-gray-300 hover:bg-white/70 focus-visible:hidden">
-        <AdjustmentsVerticalIcon className='size-5'/>{getDisplayText()}
+        <AdjustmentsVerticalIcon className='size-5' />{getDisplayText()}
         <ChevronDownIcon aria-hidden="true" className="-mr-1 size-5 text-gray-400" />
       </MenuButton>
 
@@ -308,17 +394,56 @@ function Appointment() {
   const [doctors, setDoctors] = useState<Doctor[]>([])
   const [searchQuery, setSearchQuery] = useState('')
   const [selectedDateFilter, setSelectedDateFilter] = useState('all');
+  const [notifications, setNotifications] = useState<{ id: number; message: string; type: 'success' | 'error' | 'info' | 'warning' }[]>([]);
+  const [refreshTrigger, setRefreshTrigger] = useState(0);
 
   const reduuxUserDetails = useSelector((state: RootState) => state.user)
-  
+
   const { data: appontmentdbData, loading, error } = useFetch<any[]>(`/api/getappointments?doctor_id=${reduuxUserDetails.userdbId}&hospital_id=${reduuxUserDetails.active_hospital.id}`);
 
+
+
   console.log('Appointment DB Data:', appontmentdbData);
+  // console.log('reduuxUserDetails DB Data:', reduuxUserDetails);
+
+  const addAppontmentDB = async (bodyData: any) => {
+    return await fetchAPI("/api/createAppointments", {
+      method: "POST",
+      body: JSON.stringify({
+        p_id: bodyData.p_id,
+        h_id: bodyData.h_id,
+        d_id: bodyData.d_id,
+        date: bodyData.date,
+        time: bodyData.time,
+        type: bodyData.type,
+      }),
+    }).then((data) => {
+      console.log("Appointment created:", data);
+      addNotification('Appointment created successfully!', 'success');
+      return data;
+    }).catch((error) => {
+      console.error("Error creating appointment:", error);
+      addNotification('Failed to create appointment. Please try again.', 'error');
+      throw error;
+    });
+  }
+
+  const addNotification = (message: string, type: 'success' | 'error' | 'info' | 'warning') => {
+    const id = Date.now();
+    setNotifications(prev => [...prev, { id, message, type }]);
+  };
+
+  const removeNotification = (id: number) => {
+    setNotifications(prev => prev.filter(notification => notification.id !== id));
+  };
 
   useEffect(() => {
     if (appontmentdbData && appontmentdbData.length > 0) {
       setAppointments(appontmentdbData);
     }
+    setDoctors([
+      { id: reduuxUserDetails.userdbId, name: 'Dr. ' + reduuxUserDetails.firstName + ' ' + reduuxUserDetails.lastName },
+    ]);
     // fetch('/json/appointment.json')
     //   .then(response => response.json())
     //   .then(data => setAppointments(data))
@@ -339,8 +464,17 @@ function Appointment() {
   // }, [])
 
   const handleAddAppointment = (newAppointment: Omit<AppointmentType, 'id'>) => {
-    const id = (appointments.length + 1).toString();
-    setAppointments([...appointments, { ...newAppointment, id }]);
+    // const id = (appointments.length + 1).toString();
+    // setAppointments([...appointments, { ...newAppointment, id }]);
+    console.log('New Appointment to add:', newAppointment);
+    addAppontmentDB({
+      p_id: Number(newAppointment.pat_id),
+      h_id: Number(reduuxUserDetails.active_hospital.id),
+      d_id: Number(newAppointment.doctor_id),
+      type: newAppointment.type,
+      date: newAppointment.date,
+      time: newAppointment.time
+    });
   };
 
   const filteredAppointments = useMemo(() => {
@@ -366,13 +500,22 @@ function Appointment() {
     return filtered;
   }, [appointments, searchQuery, selectedDateFilter]);
 
-  if(reduuxUserDetails.active_hospital.id === '') {
+  if (reduuxUserDetails.active_hospital.id === '') {
     return <div className='p-4'>Hospitals not aligned</div>
   }
 
 
   return (
-    <div className='p-4'>
+    <div className='p-4 relative'>
+      {notifications.map((notification, index) => (
+        <NotificationBar
+          key={notification.id}
+          message={notification.message}
+          type={notification.type}
+          onClose={() => removeNotification(notification.id)}
+          index={index}
+        />
+      ))}
       <div className='flex flex-row items-center gap-4 mb-8'>
         <div className="grow pr-20">
           <span className='relative'>
