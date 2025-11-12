@@ -12,8 +12,8 @@ import { useClerk, useUser } from '@clerk/nextjs';
 function LeftBlockNav() {
     const { signOut } = useClerk();
     const { user } = useUser();
-    const userId = useSelector((state: RootState) => state.user.userId)
-    const userName = useSelector((state: RootState) => state.user.userName)
+    const userId = user && user.id ? user.id : '';
+    const userName = user && user.username ? user.username : 'User';
     const hospitalId = useSelector((state: RootState) => state.user.hospitalId)
     const [hospitalName, setHospitalName] = React.useState('')
 

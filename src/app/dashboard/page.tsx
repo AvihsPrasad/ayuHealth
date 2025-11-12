@@ -9,9 +9,10 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useUser } from "@clerk/nextjs";
 import { useDispatch, useSelector } from 'react-redux';
-import { setDbReduxUser } from '../../redux/userSlice';
+import { setActiveHospital, setDbReduxUser } from '../../redux/userSlice';
 import { RootState } from "@/redux/store";
 import { useFetch } from "@/lib/fetch";
+import { persistor } from '../../redux/store';
 
 export default function Home() {
   const { user } = useUser();
@@ -26,19 +27,25 @@ export default function Home() {
   const userId = useSelector((state: RootState) => state.user.userId)
   const userDetails = useSelector((state: RootState) => state.user)
 
-  const { data: categoriesDb, loading, error } = useFetch<any[]>(`/api/getDoctorData?id=${userId}`);
+  const { data: categoriesDb, loading, error } = useFetch<any[]>(`/api/getDoctorData?id=${user?.id}`);
   const { data: hospitalDbList, loading: hospitalLoading, error: hospitalError } = useFetch<any[]>(`/api/getHospitals?id=${categoriesDb?.[0]?.id || userDetails.userdbId}`);
+
+  // Clear Redux store before fetching data
+  // useEffect(() => {
+    // persistor.purge();
+  // }, []);
   // const { data: staffDBdata, loading: staffLoading, error: staffError } = useFetch<any[]>(`/api/getstaff?hospital_id=${userRedux.active_hospital.id}`);
-  // console.log(userId);
-  // console.log('categoriesDb');
-  // console.log(hospitalDbList);
-  console.log(user && categoriesDb && categoriesDb.length > 0);
+  // console.log(user);
+  console.log('categoriesDb');
+  console.log(categoriesDb);
+  console.log(hospitalDbList);
+  // console.log(user && categoriesDb && categoriesDb.length > 0);
   
 
   useEffect(() => {
-    if (user && categoriesDb && categoriesDb.length > 0 && hospitalDbList && hospitalDbList.length > 0) {
+    // if (user && categoriesDb && categoriesDb.length > 0 && hospitalDbList && hospitalDbList.length > 0) {
+    if (user && categoriesDb && categoriesDb.length > 0) {
       const userData = categoriesDb[0];
-      console.log(hospitalDbList[0].id);
       dispatch(setDbReduxUser({
         userId: user.id,
         userdbId: userData.id.toString(),
@@ -61,11 +68,16 @@ export default function Home() {
         state: userData.state || '',
         city: userData.city || '',
         zip: userData.zip || '',
-        active_hospital: {id: hospitalDbList[1].id, name: hospitalDbList[1].name},
+        active_hospital: {id: '', name: ''},
         hospitalId: hospitalDbList ? hospitalDbList : [],
         role: 'admin',
         isCollapsed: false
       }));
+    }
+
+    if (user && hospitalDbList && hospitalDbList.length > 0) {
+      console.log(hospitalDbList[0].id);
+      dispatch(setActiveHospital({id: hospitalDbList[1].id , name: hospitalDbList[1].name}))
     }
     // fetch('/json/profile.json')
     //   .then(res => res.json())

@@ -11,7 +11,7 @@ export async function GET(request: Request) {
     }
     try {
         const sql = neon(`${process.env.NEON_DB_URL}`);
-        const response = await sql`SELECT * FROM users where clerk_id = ${id}`;
+        const response = await sql`SELECT * FROM users u JOIN docprofile d ON d.user_id = u.id WHERE u.clerk_id = ${id}`;
 
         return Response.json({ data: response });
     } catch (error) {

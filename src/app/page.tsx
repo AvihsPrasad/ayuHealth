@@ -6,7 +6,7 @@ import { useState, useEffect } from "react";
 import { useDispatch } from 'react-redux';
 import { setUserId, setUserName, setHospitalId, setRole } from '../redux/userSlice';
 import { EyeIcon, EyeSlashIcon, ArrowPathIcon } from '@heroicons/react/24/solid';
-import { useFetch } from "@/lib/fetch";
+import { fetchAPI, useFetch } from "@/lib/fetch";
 import { useAuth, useSignIn, useSignUp, useUser } from "@clerk/nextjs";
 import Message from "@/components/Message";
 
@@ -33,6 +33,17 @@ export default function Login() {
   const [verifyLoading, setVerifyLoading] = useState(false);
   // const [successfulCreation, setSuccessfullCreation] = useState(false)
   // const [forgotPassword, setForgotPassword] = useState(false)
+
+
+  const dbUpdate = async (clerkId: any,email: string) => {
+        await fetchAPI("/api/newUser", {
+          method: "POST",
+          body: JSON.stringify({
+            clerk_id: clerkId,
+            email,
+          }),
+        });
+      }
 
 
   useEffect(() => {
@@ -80,6 +91,7 @@ export default function Login() {
       if (signUpAttempt?.status === "complete") {
         // if (!setSignUpActive) return; // Clerk not ready yet
         await setSignUpActive!({ session: signUpAttempt.createdSessionId });
+        await dbUpdate(signUpAttempt.createdUserId,signUpFields.emailAddress);
         router.push("/dashboard")
       } else {
         setMessage({ text: 'Verification failed. Please try again.', type: 'error' });

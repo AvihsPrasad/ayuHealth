@@ -144,7 +144,7 @@ export default function Profile() {
     }
   }, [reduuxUserDetails, clerkUser])
 
-  if (!user) {
+  if (!clerkUser) {
     return <div>User not found</div>
   }
 
@@ -348,7 +348,7 @@ export default function Profile() {
               <div>
                 {/* <PhotoIcon className='size-6 text-gray-500' /> */}
                 <div className='relative w-24 h-24 bg-stone-300 items-center justify-center rounded-full flex'>
-                  <img alt="" id='profileImg' src={user.imageUrl || clerkUser?.imageUrl}
+                  <img alt="" id='profileImg' src={user?.imageUrl || clerkUser?.imageUrl}
                     className="size-fit rounded-full bg-gray-800 outline -outline-offset-1 outline-white/10" />
                   <button
                     className="absolute bottom-0 right-0 rounded-full cursor-pointer items-center bg-white p-1.5 ring-1 ring-stone-300 "
@@ -376,7 +376,7 @@ export default function Profile() {
                 )}
               </div>
               <div className='grow'>
-                {editUser ? (
+                {(editUser || !user) ? (
                   <>
                     <input name="name" value={userDraft.name} onChange={handleUserChange} className="block mb-2 border rounded px-2 py-1 w-full font-medium" />
                     <input name="profession_type" value={userDraft.profession_type} onChange={handleUserChange} className="block mb-2 border rounded px-2 py-1 w-full text-sm text-gray-500" />
@@ -384,14 +384,14 @@ export default function Profile() {
                   </>
                 ) : (
                   <>
-                    <h1 className='text-base font-medium mb-1'>{user.name}</h1>
+                    <h1 className='text-base font-medium mb-1'>{clerkUser.username}</h1>
                     <p className='text-gray-500 text-sm mb-1'>{user.profession_type}</p>
                     <p className='text-gray-500 text-sm'>{user.experience}</p>
                   </>
                 )}
               </div>
               <div>
-                {!editUser ? (
+                {(!editUser || !user) ? (
                   <button
                     className="flex flex-row rounded-md cursor-pointer items-center gap-2 bg-white px-3.5 ring-1 ring-stone-300 py-2.5 text-sm font-semibold text-gray-500 hover:text-black shadow-xs hover:bg-gray-200 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-600"
                     onClick={() => setEditUser(true)}
@@ -422,7 +422,7 @@ export default function Profile() {
             <div className='grow'>
               <h2 className='text-lg font-semibold block w-full mb-5'>Personal information</h2>
               <div className="grid grid-cols-2 gap-4">
-                {editPersonal ? (
+                {(editPersonal || !user) ? (
                   <>
                     <div>
                       <div className="text-sm text-gray-500">First Name:</div>
@@ -502,7 +502,7 @@ export default function Profile() {
             <div className='grow'>
               <h2 className='text-lg font-semibold block w-full mb-5'>Address</h2>
               <div className="grid grid-cols-2 gap-4">
-                {editAddress ? (
+                {(editAddress || !user) ? (
                   <>
                     <div>
                       <div className="text-sm text-gray-500">Country</div>
@@ -582,7 +582,7 @@ export default function Profile() {
             <div className='grow'>
               <h2 className='text-lg font-semibold block w-full mb-5'>Medical</h2>
               <div className="grid grid-cols-2 gap-4">
-                {editMedical ? (
+                {(editMedical || !user) ? (
                   <>
                     <div>
                       <div className="text-sm text-gray-500">Licence</div>
@@ -657,7 +657,7 @@ export default function Profile() {
                 <div>
                   <div className="text-sm text-gray-500 mb-1">Education</div>
                   <div className='font-semibold text-sm'>
-                    {editEducation ? (
+                    {(editEducation || !user) ? (
                       <div>
                         {educationDraft.map((item: string, idx: number) => (
                           <input
@@ -678,7 +678,7 @@ export default function Profile() {
                 <div>
                   <div className="text-sm text-gray-500 mb-1">Awards</div>
                   <div className='font-semibold text-sm'>
-                    {user.awards.map((item: any, idx: number) => (
+                    {user?.awards.map((item: any, idx: number) => (
                       <span key={idx} className="block">{item}</span>
                     ))}
                   </div>
@@ -716,7 +716,7 @@ export default function Profile() {
             <div className='grow'>
               <h2 className='text-lg font-semibold block w-full mb-5'>Social</h2>
               <div className="grid grid-cols-2 gap-4">
-                {editSocial ? (
+                {(editSocial || !user) ? (
                   <>
                     <div>
                       <div className="text-sm text-gray-500">Website</div>

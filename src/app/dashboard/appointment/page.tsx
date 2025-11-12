@@ -366,6 +366,11 @@ function Appointment() {
     return filtered;
   }, [appointments, searchQuery, selectedDateFilter]);
 
+  if(reduuxUserDetails.active_hospital.id === '') {
+    return <div className='p-4'>Hospitals not aligned</div>
+  }
+
+
   return (
     <div className='p-4'>
       <div className='flex flex-row items-center gap-4 mb-8'>
