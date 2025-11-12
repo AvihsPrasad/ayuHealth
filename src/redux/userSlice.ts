@@ -11,7 +11,7 @@ interface UserState {
   license: string
   bio: string
   exp: string
-  education: string
+  education: any[]
   awards: string
   website: string
   linkedIn: string
@@ -39,7 +39,7 @@ const initialState: UserState = {
   license: '',
   bio: '',
   exp: '',
-  education: '',
+  education: [],
   awards: '',
   website: '',
   linkedIn: '',
@@ -87,7 +87,7 @@ const userSlice = createSlice({
     setExp: (state, action: PayloadAction<string>) => {
       state.exp = action.payload
     },
-    setEducation: (state, action: PayloadAction<string>) => {
+    setEducation: (state, action: PayloadAction<any[]>) => {
       state.education = action.payload
     },
     setAwards: (state, action: PayloadAction<string>) => {
