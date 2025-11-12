@@ -129,7 +129,7 @@ export default function Profile() {
         profession_type: userData.profession_type || '',
         specialization: userData.specialization || ''
       })
-      setEducationDraft(userData.education || [])
+      setEducationDraft(Array.isArray(userData.education) ? userData.education.flat().map(String) : [])
       setSocialDraft({
         website: userData['social-links']?.website || '',
         linkedin: userData['social-links']?.linkedin || '',
@@ -219,7 +219,7 @@ export default function Profile() {
     setEditEducation(false)
   }
   const handleEducationCancel = () => {
-    setEducationDraft(user.education)
+    setEducationDraft(Array.isArray(user.education) ? user.education.flat().map(String) : [])
     setEditEducation(false)
   }
 
@@ -670,7 +670,7 @@ export default function Profile() {
                       </div>
                     ) : (
                       educationDraft.map((item: string, idx: number) => (
-                        <span key={idx} className="block">{item}</span>
+                        <p key={idx} className="block">{item}</p>
                       ))
                     )}
                   </div>
@@ -679,7 +679,7 @@ export default function Profile() {
                   <div className="text-sm text-gray-500 mb-1">Awards</div>
                   <div className='font-semibold text-sm'>
                     {user?.awards.map((item: any, idx: number) => (
-                      <span key={idx} className="block">{item}</span>
+                      <p key={idx} className="block">{item}</p>
                     ))}
                   </div>
                 </div>

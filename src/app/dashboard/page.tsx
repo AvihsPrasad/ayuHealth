@@ -30,6 +30,8 @@ export default function Home() {
   const { data: categoriesDb, loading, error } = useFetch<any[]>(`/api/getDoctorData?id=${user?.id}`);
   const { data: hospitalDbList, loading: hospitalLoading, error: hospitalError } = useFetch<any[]>(`/api/getHospitals?id=${categoriesDb?.[0]?.id || userDetails.userdbId}`);
 
+    const { data: staffDBdata, loading: staffLoading, error: staffError } = useFetch<any[]>(`/api/getstaff?hospital_id=${userDetails?.active_hospital.id}`);
+
   // Clear Redux store before fetching data
   // useEffect(() => {
     // persistor.purge();
@@ -67,7 +69,7 @@ export default function Home() {
         country: userData.country || '',
         state: userData.state || '',
         city: userData.city || '',
-        zip: userData.zip || '',
+        zip: userData.zipcode || '',
         active_hospital: {id: '', name: ''},
         hospitalId: hospitalDbList ? hospitalDbList : [],
         role: 'admin',
@@ -78,6 +80,11 @@ export default function Home() {
     if (user && hospitalDbList && hospitalDbList.length > 0) {
       console.log(hospitalDbList[0].id);
       dispatch(setActiveHospital({id: hospitalDbList[1].id , name: hospitalDbList[1].name}))
+    }
+
+    if (user && staffDBdata && staffDBdata.length > 0) {
+      console.log(staffDBdata);
+      setStaff(staffDBdata);
     }
     // fetch('/json/profile.json')
     //   .then(res => res.json())
@@ -93,7 +100,7 @@ export default function Home() {
     //   });
 
     // Update Redux with user details from Clerk
-  }, [user, categoriesDb, hospitalDbList, dispatch]);
+  }, [user, categoriesDb, hospitalDbList, staffDBdata, dispatch]);
 
   console.log(userDetails)
 
@@ -163,7 +170,7 @@ export default function Home() {
                     </div>
                     <div className="grow">
                       <div className="text-sm font-medium text-gray-900">{s.name}</div>
-                      <div className="text-sm text-gray-500">{s.position} - {s.department}</div>
+                      <div className="text-sm text-gray-500">{s.designation} - {s.exp} yrs</div>
                     </div>
                     <div className="flex items-center justify-center">
                       <button className="flex rounded-full cursor-pointer justify-center items-center bg-white p-2 text-gray-500  hover:bg-gray-200 border-1 border-gray-300">
